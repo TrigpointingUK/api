@@ -6,7 +6,7 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@4.7
+  node: circleci/node@5.0.0
   codecov: codecov/codecov@3.2.2
 
 jobs:
@@ -20,13 +20,12 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
 
-      - node/test:
-          post-steps:
-            - codecov/upload
+      - run:
+          name: Run jest coverage
+          command: npm run test:cov
 
-      # - run:
-      #     name: Run jest coverage
-      #     command: npm run test:cov
+      - codecov/upload
+
       # - run:
       #     name: Upload to codecov
       #     when: always
