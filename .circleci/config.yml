@@ -55,7 +55,6 @@ jobs:
       - run:
           name: Build image
           command: docker build --cache-from=tuk-api . -t tuk-api
-          working_directory: api
 
       - run:
           name: Save Docker image layer cache
