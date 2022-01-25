@@ -1,0 +1,162 @@
+# Docs : https://circleci.com/docs/2.0/configuration-reference
+# Orb: https://circleci.com/developer/orbs/orb/circleci/node
+# Docker executor: https://circleci.com/docs/2.0/executor-types/
+# Convenience Images: https://circleci.com/developer/images/image/cimg/node
+
+version: 2.1
+
+orbs:
+  node: circleci/node@4.7
+  codecov: codecov/codecov@3.2.2
+
+jobs:
+  api-unit-test:
+    docker:
+      - image: cimg/node:16.10
+
+    steps:
+      - checkout
+
+      - node/install-packages:
+          pkg-manager: npm
+
+      - node/test:
+          post-steps:
+            - codecov/upload
+
+      # - run:
+      #     name: Run jest coverage
+      #     command: npm run test:cov
+      # - run:
+      #     name: Upload to codecov
+      #     when: always
+      #     command: npm run test:codecov
+
+  api-build:
+    docker:
+      - image: google/cloud-sdk
+
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      - restore_cache:
+          keys:
+            - v1-{{ .Branch }}
+          paths:
+            - /caches/tuk-api.tar
+
+      - run:
+          name: Load Docker image layer cache
+          command: |
+            set +o pipefail
+            docker load -i /caches/tuk-api.tar | true
+
+      - run:
+          name: Build image
+          command: docker build --cache-from=tuk-api . -t tuk-api
+          working_directory: api
+
+      - run:
+          name: Save Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/tuk-api.tar tuk-api
+
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/tuk-api.tar
+
+      - run:
+          name: Push to Google Artifact Registry
+          command: |
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project trigpointinguk
+            gcloud config list
+            gcloud auth configure-docker europe-west1-docker.pkg.dev
+            docker tag tuk-api europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:latest
+            docker push europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:latest
+
+  api-deploy-tme:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - checkout
+      - run:
+          name: Deploy to Cloud Run
+          command: |
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project trigpointinguk
+            gcloud config list
+            gcloud auth configure-docker europe-west1-docker.pkg.dev
+            gcloud run deploy api-tme \
+              --image=europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:latest \
+              --region=europe-west1 \
+              --allow-unauthenticated \
+              --port=3000 \
+              --memory=4Gi \
+              --update-env-vars MODE=DEV,\
+            RUN_MIGRATIONS=true,\
+            NEST_DEBUG=true,\
+            AUTH0_ISSUER_URL=https://teasel.eu.auth0.com/,\
+            AUTH0_AUDIENCE=https://api.trigpointing.me,\
+            AUTH0_REDIRECT_URL=https://api.trigpointing.me/docs/oauth2-redirect.html,\
+            NODE_TLS_REJECT_UNAUTHORIZED=0 \
+              --update-secrets=POSTGRES_HOST=TME_POSTGRES_HOST:latest,\
+            POSTGRES_PORT=TME_POSTGRES_PORT:latest,\
+            POSTGRES_USER=TME_POSTGRES_USER:latest,\
+            POSTGRES_PASSWORD=TME_POSTGRES_PASSWORD:latest,\
+            POSTGRES_DATABASE=TME_POSTGRES_DATABASE:latest,\
+            AUTH0_CLIENT_ID=TME_SWAGGER_AUTH0_CLIENT_ID:latest,\
+
+  api-deploy-tuk:
+    docker:
+      - image: google/cloud-sdk
+    steps:
+      - checkout
+      - run:
+          name: Deploy to Cloud Run
+          command: |
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project trigpointinguk
+            gcloud config list
+            gcloud auth configure-docker europe-west1-docker.pkg.dev
+            gcloud run deploy api-tuk \
+              --image=europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:latest \
+              --region=europe-west1 \
+              --allow-unauthenticated \
+              --port=3000 \
+              --memory=4Gi \
+              --update-env-vars MODE=DEV,\
+            RUN_MIGRATIONS=true,\
+            NEST_DEBUG=true,\
+            AUTH0_ISSUER_URL=https://teasel.eu.auth0.com/,\
+            AUTH0_AUDIENCE=https://api.trigpointing.me,\
+            AUTH0_REDIRECT_URL=https://api.trigpointing.me/docs/oauth2-redirect.html,\
+            NODE_TLS_REJECT_UNAUTHORIZED=0 \
+              --update-secrets=POSTGRES_HOST=TME_POSTGRES_HOST:latest,\
+            POSTGRES_PORT=TME_POSTGRES_PORT:latest,\
+            POSTGRES_USER=TME_POSTGRES_USER:latest,\
+            POSTGRES_PASSWORD=TME_POSTGRES_PASSWORD:latest,\
+            POSTGRES_DATABASE=TME_POSTGRES_DATABASE:latest,\
+            AUTH0_CLIENT_ID=TME_SWAGGER_AUTH0_CLIENT_ID:latest,\
+
+workflows:
+  oncommit:
+    jobs:
+      - api-unit-test
+      - api-build
+      - api-deploy-tme:
+          requires:
+            - api-unit-test
+            - api-build
+      - api-deploy-tuk:
+          requires:
+            - api-unit-test
+            - api-build
+          filters:
+            branches:
+              only:
+                - main
