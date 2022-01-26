@@ -1,55 +1,31 @@
-# TUK-API
+# TrigpointingUK - API
 
-Development app for testing new API/SPA based T:UK website
+## Source code for TrigpointingUK API.
 
-## Heroku test postgresql database
+The current TrigpointingUK website uses outdated PHP code, which does not meet modern
+security expectations, and which relies on AWS functionality due to be deprecated in
+August 2022. This repo houses the development of a more cloud native codebase.
 
-### Connect:
+## Test results
 
-```bash
-heroku pg:psql postgresql-transparent-57552 --app trigpointing-me
-```
+[![codecov](https://codecov.io/gh/TrigpointingUK/api/branch/main/graph/badge.svg?token=WAG6U0E2S6)](https://codecov.io/gh/TrigpointingUK/api)
+[![CircleCI](https://circleci.com/gh/TrigpointingUK/api/tree/main.svg?style=shield)](https://circleci.com/gh/TrigpointingUK/api/tree/main)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTrigpointingUK%2Fapi.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FTrigpointingUK%2Fapi?ref=badge_shield)
 
-### Rotate credentials:
+## License and copyright
 
-```
-heroku pg:credentials:rotate postgresql-transparent-57552 --app trigpointing-me
-```
+    Copyright (C) 2021-2022  Ian Harris
 
-...then update local .env file  
-...then update [GCP secrets](https://console.cloud.google.com/security/secret-manager?project=tuk-dev)  
-...then redeploy / restart the app
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, version 3.
 
-## NPM
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
 
-### Installation
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/agpl-3.0.txt>.
 
-```bash
-$ npm install
-```
-
-### Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-### Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTrigpointingUK%2Ftuk.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTrigpointingUK%2Ftuk?ref=badge_large)
