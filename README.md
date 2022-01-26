@@ -1,4 +1,6 @@
 # TUK-API
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTrigpointingUK%2Fapi.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FTrigpointingUK%2Fapi?ref=badge_shield)
+
 
 Development app for testing new API/SPA based T:UK website
 
@@ -53,3 +55,7 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTrigpointingUK%2Fapi.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTrigpointingUK%2Fapi?ref=badge_large)
