@@ -26,11 +26,6 @@ jobs:
 
       - codecov/upload
 
-      # - run:
-      #     name: Upload to codecov
-      #     when: always
-      #     command: npm run test:codecov
-
   api-build:
     docker:
       - image: google/cloud-sdk
@@ -83,7 +78,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Deploy to Cloud Run
+          name: Deploy to Cloud Run - api-tme
           command: |
             echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project trigpointinguk
@@ -95,19 +90,23 @@ jobs:
               --allow-unauthenticated \
               --port=3000 \
               --memory=4Gi \
-              --update-env-vars MODE=DEV,\
-            RUN_MIGRATIONS=true,\
-            NEST_DEBUG=true,\
-            AUTH0_ISSUER_URL=https://teasel.eu.auth0.com/,\
-            AUTH0_AUDIENCE=https://api.trigpointing.me,\
-            AUTH0_REDIRECT_URL=https://api.trigpointing.me/docs/oauth2-redirect.html,\
-            NODE_TLS_REJECT_UNAUTHORIZED=0 \
-              --update-secrets=POSTGRES_HOST=TME_POSTGRES_HOST:latest,\
-            POSTGRES_PORT=TME_POSTGRES_PORT:latest,\
-            POSTGRES_USER=TME_POSTGRES_USER:latest,\
-            POSTGRES_PASSWORD=TME_POSTGRES_PASSWORD:latest,\
-            POSTGRES_DATABASE=TME_POSTGRES_DATABASE:latest,\
-            AUTH0_CLIENT_ID=TME_SWAGGER_AUTH0_CLIENT_ID:latest,\
+              --max-instances=2 \
+              --min-instances=1 \
+              --update-env-vars \
+                  MODE=DEV,\
+                  RUN_MIGRATIONS=true,\
+                  NEST_DEBUG=true,\
+                  AUTH0_ISSUER_URL=https://teasel.eu.auth0.com/,\
+                  AUTH0_AUDIENCE=https://api.trigpointing.me,\
+                  AUTH0_REDIRECT_URL=https://api.trigpointing.me/docs/oauth2-redirect.html,\
+                  NODE_TLS_REJECT_UNAUTHORIZED=0 \
+              --update-secrets \
+                  POSTGRES_HOST=TME_POSTGRES_HOST:latest,\
+                  POSTGRES_PORT=TME_POSTGRES_PORT:latest,\
+                  POSTGRES_USER=TME_POSTGRES_USER:latest,\
+                  POSTGRES_PASSWORD=TME_POSTGRES_PASSWORD:latest,\
+                  POSTGRES_DATABASE=TME_POSTGRES_DATABASE:latest,\
+                  AUTH0_CLIENT_ID=TME_SWAGGER_AUTH0_CLIENT_ID:latest,\
 
   api-deploy-tuk:
     docker:
@@ -115,7 +114,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Deploy to Cloud Run
+          name: Deploy to Cloud Run - api-tuk
           command: |
             echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project trigpointinguk
@@ -127,19 +126,23 @@ jobs:
               --allow-unauthenticated \
               --port=3000 \
               --memory=4Gi \
-              --update-env-vars MODE=DEV,\
-            RUN_MIGRATIONS=true,\
-            NEST_DEBUG=true,\
-            AUTH0_ISSUER_URL=https://teasel.eu.auth0.com/,\
-            AUTH0_AUDIENCE=https://api.trigpointing.me,\
-            AUTH0_REDIRECT_URL=https://api.trigpointing.me/docs/oauth2-redirect.html,\
-            NODE_TLS_REJECT_UNAUTHORIZED=0 \
-              --update-secrets=POSTGRES_HOST=TME_POSTGRES_HOST:latest,\
-            POSTGRES_PORT=TME_POSTGRES_PORT:latest,\
-            POSTGRES_USER=TME_POSTGRES_USER:latest,\
-            POSTGRES_PASSWORD=TME_POSTGRES_PASSWORD:latest,\
-            POSTGRES_DATABASE=TME_POSTGRES_DATABASE:latest,\
-            AUTH0_CLIENT_ID=TME_SWAGGER_AUTH0_CLIENT_ID:latest,\
+              --max-instances=10 \
+              --min-instances=1 \
+              --update-env-vars \
+                  MODE=DEV,\
+                  RUN_MIGRATIONS=true,\
+                  NEST_DEBUG=true,\
+                  AUTH0_ISSUER_URL=https://teasel.eu.auth0.com/,\
+                  AUTH0_AUDIENCE=https://api.trigpointing.me,\
+                  AUTH0_REDIRECT_URL=https://api.trigpointing.me/docs/oauth2-redirect.html,\
+                  NODE_TLS_REJECT_UNAUTHORIZED=0 \
+              --update-secrets \
+                  POSTGRES_HOST=TME_POSTGRES_HOST:latest,\
+                  POSTGRES_PORT=TME_POSTGRES_PORT:latest,\
+                  POSTGRES_USER=TME_POSTGRES_USER:latest,\
+                  POSTGRES_PASSWORD=TME_POSTGRES_PASSWORD:latest,\
+                  POSTGRES_DATABASE=TME_POSTGRES_DATABASE:latest,\
+                  AUTH0_CLIENT_ID=TME_SWAGGER_AUTH0_CLIENT_ID:latest,\
 
 workflows:
   oncommit:
@@ -150,6 +153,10 @@ workflows:
           requires:
             - api-unit-test
             - api-build
+          filters:
+            branches:
+              ignore:
+                - main
       - api-deploy-tuk:
           requires:
             - api-unit-test

@@ -6,7 +6,7 @@ The current TrigpointingUK website uses outdated PHP code, which does not meet m
 security expectations, and which relies on AWS functionality due to be deprecated in
 August 2022. This repo houses the development of a more cloud native codebase.
 
-## Test results
+## Test results - Main branch
 
 [![codecov](https://codecov.io/gh/TrigpointingUK/api/branch/main/graph/badge.svg?token=WAG6U0E2S6)](https://codecov.io/gh/TrigpointingUK/api)
 [![CircleCI](https://circleci.com/gh/TrigpointingUK/api/tree/main.svg?style=shield)](https://circleci.com/gh/TrigpointingUK/api/tree/main)
