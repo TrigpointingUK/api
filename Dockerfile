@@ -1,9 +1,4 @@
-FROM node:17-alpine As development
-
-# Get node-pre-gyp errors without python.  
-# Basing on alpine smaller than node:17 image
-RUN apk add --update python3 make g++\
-   && rm -rf /var/cache/apk/*
+FROM node:17 As development
 
 WORKDIR /usr/src/app
 
@@ -15,10 +10,7 @@ COPY . .
 
 RUN npm run build
 
-FROM node:17-alpine As production
-
-RUN apk add --update python3 make g++\
-   && rm -rf /var/cache/apk/*
+FROM node:17 As production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
