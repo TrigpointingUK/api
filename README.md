@@ -27,5 +27,3 @@ August 2022. This repo houses the development of a more cloud native codebase.
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/agpl-3.0.txt>.
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FTrigpointingUK%2Ftuk.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FTrigpointingUK%2Ftuk?ref=badge_large)
