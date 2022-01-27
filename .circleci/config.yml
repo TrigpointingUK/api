@@ -73,6 +73,15 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Retag image
+          command: |
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project trigpointinguk
+            gcloud auth configure-docker europe-west1-docker.pkg.dev
+            docker pull tuk-api europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_SHA1
+            docker tag tuk-api europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:tme
+            docker push europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:tme
+      - run:
           name: Deploy to Cloud Run - api-tme
           command: |
             echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
@@ -115,8 +124,8 @@ jobs:
             gcloud --quiet config set project trigpointinguk
             gcloud auth configure-docker europe-west1-docker.pkg.dev
             docker pull tuk-api europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_SHA1
-            docker tag tuk-api europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:main
-            docker push europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:main
+            docker tag tuk-api europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:tuk
+            docker push europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:tuk
 
       - run:
           name: Deploy to Cloud Run - api-tuk
