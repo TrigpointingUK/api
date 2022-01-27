@@ -80,7 +80,7 @@ jobs:
             gcloud config list
             gcloud auth configure-docker europe-west1-docker.pkg.dev
             gcloud run deploy api-tme \
-              --image=europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_BUILD_NUM \
+              --image=europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_SHA1 \
               --region=europe-west1 \
               --allow-unauthenticated \
               --port=3000 \
@@ -115,8 +115,8 @@ jobs:
             gcloud --quiet config set project trigpointinguk
             gcloud auth configure-docker europe-west1-docker.pkg.dev
             docker pull tuk-api europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_SHA1
-            docker tag tuk-api europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:tuk
-            docker push europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:tuk
+            docker tag tuk-api europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:main
+            docker push europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:main
 
       - run:
           name: Deploy to Cloud Run - api-tuk
@@ -126,7 +126,7 @@ jobs:
             gcloud config list
             gcloud auth configure-docker europe-west1-docker.pkg.dev
             gcloud run deploy api-tuk \
-              --image=europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:tuk \
+              --image=europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_SHA1 \
               --region=europe-west1 \
               --allow-unauthenticated \
               --port=3000 \
