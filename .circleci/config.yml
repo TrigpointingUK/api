@@ -22,7 +22,7 @@ jobs:
           command: npm run test
           no_output_timeout: 1m
 
-  api-unit-test:
+  api-unit-test-circleci:
     docker:
       - image: cimg/node:16.10
     steps:
@@ -38,8 +38,6 @@ jobs:
           path: ./reports/junit/
       - store_artifacts:
           path: ./reports/junit
-
-
 
   api-coverage:
     docker:
@@ -177,6 +175,7 @@ workflows:
   oncommit:
     jobs:
       - api-unit-test
+      - api-unit-test-circleci
       - api-coverage
       - api-build
       - api-deploy-tme:
