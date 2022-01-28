@@ -16,7 +16,7 @@ export class LogsService {
   ) {}
 
   async create(createLogDto: CreateLogDto): Promise<Log> {
-    const trig: Trig = await this.trigsService.findOne(createLogDto.trig_id);
+    const trig: Trig = await this.trigsService.findById(createLogDto.trig_id);
     if (!trig) {
       throw new NotFoundException(`Trig ${createLogDto.trig_id} not found.`);
     }

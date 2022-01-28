@@ -78,7 +78,7 @@ export class TrigsService {
     return this.trigsRepository.find();
   }
 
-  findOne(id: number) {
+  findById(id: number) {
     return this.trigsRepository.findOne(id);
   }
 

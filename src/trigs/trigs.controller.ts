@@ -51,8 +51,8 @@ export class TrigsController {
    */
   @Get(':id')
   @UseGuards(AuthGuard('tukjwt'), PermissionsGuard)
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.trigsService.findOne(+id);
+  findById(@Param('id', ParseIntPipe) id: number) {
+    return this.trigsService.findById(+id);
   }
 
   /**

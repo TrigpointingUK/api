@@ -134,7 +134,7 @@ describe('TrigsService', () => {
       expect(repoFindSpy).toHaveBeenCalledWith();
     });
     it('should find a single trigpoint', async () => {
-      const r1 = await service.findOne(1);
+      const r1 = await service.findById(1);
       expect(r1).toEqual(trig01);
       expect(repoFindOneSpy).toHaveBeenCalledWith(1);
     });
