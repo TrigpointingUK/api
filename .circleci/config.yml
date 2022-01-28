@@ -18,6 +18,37 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
+          name: Run jest
+          command: npm run test
+          no_output_timeout: 1m
+
+  api-unit-test:
+    docker:
+      - image: cimg/node:16.10
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          name: Run tests with JUnit as reporter
+          command: jest --ci --runInBand --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+      - store_test_results:
+          path: ./reports/junit/
+      - store_artifacts:
+          path: ./reports/junit
+
+
+
+  api-coverage:
+    docker:
+      - image: cimg/node:16.10
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
           name: Run jest coverage
           command: npm run test:cov
           no_output_timeout: 1m
@@ -30,29 +61,9 @@ jobs:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
-      # - restore_cache:
-      #     keys:
-      #       - v1-{{ .Branch }}
-      #     paths:
-      #       - /caches/tuk-api.tar
-      # - run:
-      #     name: Load Docker image layer cache
-      #     command: |
-      #       set +o pipefail
-      #       docker load -i /caches/tuk-api.tar | true
       - run:
           name: Build image
           command: docker build . -t tuk-api
-          # command: docker build --cache-from=tuk-api . -t tuk-api
-      # - run:
-      #     name: Save Docker image layer cache
-      #     command: |
-      #       mkdir -p /caches
-      #       docker save -o /caches/tuk-api.tar tuk-api
-      # - save_cache:
-      #     key: v1-{{ .Branch }}-{{ epoch }}
-      #     paths:
-      #       - /caches/tuk-api.tar
       - run:
           name: Push to Google Artifact Registry
           command: |
@@ -166,6 +177,7 @@ workflows:
   oncommit:
     jobs:
       - api-unit-test
+      - api-coverage
       - api-build
       - api-deploy-tme:
           requires:
