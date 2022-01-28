@@ -32,6 +32,7 @@ jobs:
       - run:
           name: Run tests with JUnit as reporter
           command: jest --ci --runInBand --reporters=default --reporters=jest-junit
+          no_output_timeout: 1m
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
       - store_test_results:
