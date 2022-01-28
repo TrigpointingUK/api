@@ -53,7 +53,7 @@ export class Trig {
   }
 
   @Column({ type: 'enum', enum: Status, default: Status.UNKNOWN })
-  status_id: Status;
+  status: Status;
 
   @Exclude()
   @Column({ type: 'boolean', default: false })

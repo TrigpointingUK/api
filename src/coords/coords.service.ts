@@ -205,10 +205,10 @@ export class CoordsService {
    * @param {integer} decimals - [optional] The specified number of decimal places.
    */
   WGStoOSTN(coordinates: any, decimals: number = 7): object {
-    // var test = this.checkBounds(coordinates);
-    // if (!test) {
-    //   return {};
-    // }
+    var test = this.checkBounds(coordinates);
+    if (!test) {
+      return {};
+    }
 
     var point = proj4('WGS84', 'OSTN15', [coordinates.lng, coordinates.lat]);
 
