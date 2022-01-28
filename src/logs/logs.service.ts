@@ -27,7 +27,7 @@ export class LogsService {
     return this.logsRepository.find({ relations: ['trig'] });
   }
 
-  findOne(id: number) {
+  findById(id: number) {
     return this.logsRepository.findOne(id);
   }
 
@@ -39,6 +39,6 @@ export class LogsService {
   }
 
   async remove(id: number) {
-    await this.logsRepository.delete(id);
+    await this.logsRepository.softDelete(id);
   }
 }

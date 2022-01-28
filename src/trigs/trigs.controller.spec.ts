@@ -1,6 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { createMock } from '@golevelup/ts-jest';
-
 import { CreateTrigDto } from './dto/create-trig.dto';
 import { TrigsController } from './trigs.controller';
 import { TrigsService } from './trigs.service';
@@ -15,13 +13,10 @@ const trig01: Trig = {
 const newTrig: CreateTrigDto = {} as CreateTrigDto;
 const updateTrig: UpdateTrigDto = {} as UpdateTrigDto;
 const trigArray = [{ trig01 }, { trig01 }];
-const emptyRequest = createMock<Request>() as Request;
 
 describe('TrigsController', () => {
   let controller: TrigsController;
   let service: TrigsService;
-
-  const consoleSpy = jest.spyOn(console, 'log').mockImplementation();
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

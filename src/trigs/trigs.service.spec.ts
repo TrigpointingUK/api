@@ -159,8 +159,6 @@ describe('TrigsService', () => {
 
   describe('delete', () => {
     it('should delete records', async () => {
-      const repoSpy = jest.spyOn(repository, 'save');
-
       const r1 = await service.remove(1);
       expect(r1).toBeUndefined();
       expect(repoDeleteSpy).toHaveBeenCalledWith(1);
