@@ -1,10 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-
 import { Trig } from '../trigs/entities/trig.entity';
-
 import { Log } from './entities/log.entity';
-
 import { LogsService } from './logs.service';
 import { TrigsService } from '../trigs/trigs.service';
 import { CoordsService } from 'src/coords/coords.service';
