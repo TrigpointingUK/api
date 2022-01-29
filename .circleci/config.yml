@@ -42,7 +42,6 @@ jobs:
       - codecov/upload:
           when: always
 
-
   api-coverage-circleci:
     docker:
       - image: cimg/node:16.10
@@ -54,9 +53,8 @@ jobs:
           name: Run coverage tests
           command: npx jest --ci --runInBand --coverage
           no_output_timeout: 1m
-      - codecov/upload
+      - codecov/upload:
           when: always
-
 
   api-build:
     docker:
