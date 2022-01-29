@@ -39,7 +39,7 @@ jobs:
           name: Run jest coverage
           command: npm run test:cov
           no_output_timeout: 1m
-      - codecov/upload
+      - codecov/upload:
           when: always
 
 
