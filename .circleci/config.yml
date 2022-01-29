@@ -51,7 +51,7 @@ jobs:
           pkg-manager: npm
       - run:
           name: Run coverage tests
-          command: npx jest --ci --runInBand --coverage
+          command: npx jest --runInBand --coverage
           no_output_timeout: 1m
       - codecov/upload:
           when: always
