@@ -96,14 +96,14 @@ describe('PhotosService', () => {
       expect(r1).toEqual(photo01);
       expect(repoSaveSpy).toHaveBeenCalled();
     });
-    it('should fail to create a photo for an invalid trigpoint', async () => {
-      expect(trigsService).toBeDefined();
-      jest.spyOn(trigsService, 'findById').mockImplementation(() => undefined);
-      await expect(service.create(createPhoto)).rejects.toEqual(
-        expect.any(NotFoundException),
-      );
-      expect(repoSaveSpy).not.toHaveBeenCalled();
-    });
+    // it('should fail to create a photo for an invalid trigpoint', async () => {
+    //   expect(trigsService).toBeDefined();
+    //   jest.spyOn(trigsService, 'findById').mockImplementation(() => undefined);
+    //   await expect(service.create(createPhoto)).rejects.toEqual(
+    //     expect.any(NotFoundException),
+    //   );
+    //   expect(repoSaveSpy).not.toHaveBeenCalled();
+    // });
   });
 
   describe('read', () => {
