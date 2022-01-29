@@ -25,7 +25,7 @@ export class PhotosService {
     return this.photosRepository.find();
   }
 
-  findOne(id: number) {
+  findById(id: number) {
     return this.photosRepository.findOne(id);
   }
 
@@ -37,6 +37,6 @@ export class PhotosService {
   }
 
   async remove(id: number) {
-    await this.photosRepository.delete(id);
+    await this.photosRepository.softDelete(id);
   }
 }

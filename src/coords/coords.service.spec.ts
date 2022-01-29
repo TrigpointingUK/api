@@ -105,4 +105,14 @@ describe('CoordsService', () => {
       service.WGStoOSTN({ lat: 54.044144842, lng: -0.788782089 }, 3)['no'],
     ).toBeCloseTo(461584.573, 1.9);
   });
+
+  it('should check bounds for WGS to OSGB conversion', () => {
+    expect(service.WGStoOSGB({ lat: 20, lng: 20 })).toEqual({});
+  });
+  it('should check bounds for OSGB to WGS conversion', () => {
+    expect(service.OSGBtoWGS({ lat: 20, lng: 20 })).toEqual({});
+  });
+  it('should check bounds for WGS to OSTN conversion', () => {
+    expect(service.WGStoOSTN({ lat: 20, lng: 20 })).toEqual({});
+  });
 });

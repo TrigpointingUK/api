@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { LogsService } from './logs.service';
 // import { Log } from './entities/log';
@@ -47,17 +48,20 @@ export class LogsController {
    * Retrieve a single log
    */
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.logsService.findOne(+id);
+  findById(@Param('id', ParseIntPipe) id: number) {
+    return this.logsService.findById(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLogDto: UpdateLogDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateLogDto: UpdateLogDto,
+  ) {
     return this.logsService.update(+id, updateLogDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: number) {
     return this.logsService.remove(+id);
   }
 }

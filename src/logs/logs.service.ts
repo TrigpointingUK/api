@@ -16,7 +16,7 @@ export class LogsService {
   ) {}
 
   async create(createLogDto: CreateLogDto): Promise<Log> {
-    const trig: Trig = await this.trigsService.findOne(createLogDto.trig_id);
+    const trig: Trig = await this.trigsService.findById(createLogDto.trig_id);
     if (!trig) {
       throw new NotFoundException(`Trig ${createLogDto.trig_id} not found.`);
     }
@@ -27,7 +27,7 @@ export class LogsService {
     return this.logsRepository.find({ relations: ['trig'] });
   }
 
-  findOne(id: number) {
+  findById(id: number) {
     return this.logsRepository.findOne(id);
   }
 
@@ -39,6 +39,6 @@ export class LogsService {
   }
 
   async remove(id: number) {
-    await this.logsRepository.delete(id);
+    await this.logsRepository.softDelete(id);
   }
 }
