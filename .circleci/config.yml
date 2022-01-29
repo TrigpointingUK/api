@@ -54,7 +54,7 @@ jobs:
       - run:
           name: Push to Google Artifact Registry
           command: |
-            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project trigpointinguk
             gcloud config list
             gcloud auth configure-docker europe-west1-docker.pkg.dev
@@ -76,7 +76,7 @@ jobs:
       - run:
           name: Retag image
           command: |
-            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project trigpointinguk
             gcloud auth configure-docker europe-west1-docker.pkg.dev
             docker pull europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_SHA1
@@ -85,10 +85,10 @@ jobs:
       - run:
           name: Deploy to Cloud Run - api-tme
           command: |
-            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
-            gcloud --quiet config set project trigpointinguk
-            gcloud config list
-            gcloud auth configure-docker europe-west1-docker.pkg.dev
+            # echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            # gcloud --quiet config set project trigpointinguk
+            # gcloud config list
+            # gcloud auth configure-docker europe-west1-docker.pkg.dev
             gcloud run deploy api-tme \
               --image=europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_SHA1 \
               --region=europe-west1 \
@@ -122,7 +122,7 @@ jobs:
       - run:
           name: Retag image
           command: |
-            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project trigpointinguk
             gcloud auth configure-docker europe-west1-docker.pkg.dev
             docker pull europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_SHA1
@@ -132,10 +132,10 @@ jobs:
       - run:
           name: Deploy to Cloud Run - api-tuk
           command: |
-            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
-            gcloud --quiet config set project trigpointinguk
-            gcloud config list
-            gcloud auth configure-docker europe-west1-docker.pkg.dev
+            # echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            # gcloud --quiet config set project trigpointinguk
+            # gcloud config list
+            # gcloud auth configure-docker europe-west1-docker.pkg.dev
             gcloud run deploy api-tuk \
               --image=europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_SHA1 \
               --region=europe-west1 \
