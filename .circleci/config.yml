@@ -178,6 +178,7 @@ workflows:
     jobs:
       - api-unit-test
       - api-coverage
+      - api-coverage-circleci
       - api-build
       - api-deploy-tme:
           requires:
