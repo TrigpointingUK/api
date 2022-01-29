@@ -54,18 +54,13 @@ jobs:
       - run:
           name: Push to Google Artifact Registry
           command: |
-            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project trigpointinguk
-            gcloud config list
-            gcloud auth configure-docker europe-west1-docker.pkg.dev
-            docker tag tuk-api europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:latest
-            docker push europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:latest
-            docker tag tuk-api europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_SHA1
-            docker push europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_SHA1
-            docker tag tuk-api europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_BUILD_NUM
-            docker push europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_BUILD_NUM
-            docker tag tuk-api europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_BRANCH
-            docker push europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_BRANCH
+            gcloud auth configure-docker $GCR
+            for version in latest $CIRCLE_SHA1 $CIRCLE_BUILD_NUM $CIRCLE_BRANCH ; do
+              docker tag tuk-api $TAG:$version
+              docker push        $TAG:$version
+            done
 
   api-deploy-tme:
     docker:
@@ -76,22 +71,18 @@ jobs:
       - run:
           name: Retag image
           command: |
-            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project trigpointinguk
-            gcloud auth configure-docker europe-west1-docker.pkg.dev
-            docker pull europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_SHA1
-            docker tag europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_SHA1 europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:tme
-            docker push europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:tme
+            gcloud auth configure-docker $GCR
+            docker pull $TAG:$CIRCLE_SHA1
+            docker tag  $TAG:$CIRCLE_SHA1 $TAG:tme
+            docker push $TAG:tme
       - run:
           name: Deploy to Cloud Run - api-tme
           command: |
-            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
-            gcloud --quiet config set project trigpointinguk
-            gcloud config list
-            gcloud auth configure-docker europe-west1-docker.pkg.dev
             gcloud run deploy api-tme \
-              --image=europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_SHA1 \
-              --region=europe-west1 \
+              --image=$TAG:$CIRCLE_SHA1 \
+              --region=$REGION \
               --allow-unauthenticated \
               --port=3000 \
               --memory=4Gi \
@@ -122,23 +113,19 @@ jobs:
       - run:
           name: Retag image
           command: |
-            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project trigpointinguk
-            gcloud auth configure-docker europe-west1-docker.pkg.dev
-            docker pull europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_SHA1
-            docker tag europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_SHA1 europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:tuk
-            docker push europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:tuk
+            gcloud auth configure-docker $GCR
+            docker pull $TAG:$CIRCLE_SHA1
+            docker tag  $TAG:$CIRCLE_SHA1 $TAG:tuk
+            docker push $TAG:tuk
 
       - run:
           name: Deploy to Cloud Run - api-tuk
           command: |
-            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
-            gcloud --quiet config set project trigpointinguk
-            gcloud config list
-            gcloud auth configure-docker europe-west1-docker.pkg.dev
             gcloud run deploy api-tuk \
-              --image=europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:$CIRCLE_SHA1 \
-              --region=europe-west1 \
+              --image=$TAG:$CIRCLE_SHA1 \
+              --region=$REGION \
               --allow-unauthenticated \
               --port=3000 \
               --memory=4Gi \
