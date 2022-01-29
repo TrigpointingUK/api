@@ -18,18 +18,6 @@ jobs:
       - node/install-packages:
           pkg-manager: npm
       - run:
-          name: Run jest
-          command: npm run test
-          no_output_timeout: 1m
-
-  api-unit-test-circleci:
-    docker:
-      - image: cimg/node:16.10
-    steps:
-      - checkout
-      - node/install-packages:
-          pkg-manager: npm
-      - run:
           name: Run tests with JUnit as reporter
           command: npx jest --ci --runInBand --reporters=default --reporters=jest-junit
           no_output_timeout: 1m
@@ -50,6 +38,19 @@ jobs:
       - run:
           name: Run jest coverage
           command: npm run test:cov
+          no_output_timeout: 1m
+      - codecov/upload
+
+  api-coverage-circleci:
+    docker:
+      - image: cimg/node:16.10
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          name: Run coverage tests
+          command: npx jest --ci --runInBand --coverage
           no_output_timeout: 1m
       - codecov/upload
 
@@ -176,7 +177,6 @@ workflows:
   oncommit:
     jobs:
       - api-unit-test
-      - api-unit-test-circleci
       - api-coverage
       - api-build
       - api-deploy-tme:
