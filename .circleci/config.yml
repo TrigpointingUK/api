@@ -82,7 +82,7 @@ jobs:
           command: |
             gcloud run deploy api-tme \
               --image=$TAG:$CIRCLE_SHA1 \
-              --region=europe-west1 \
+              --region=$REGION \
               --allow-unauthenticated \
               --port=3000 \
               --memory=4Gi \
