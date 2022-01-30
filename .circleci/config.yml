@@ -83,6 +83,7 @@ jobs:
             gcloud run deploy api-tme \
               --image=$TAG:$CIRCLE_SHA1 \
               --region=$REGION \
+              --service-account=api-tme@trigpointinguk.iam.gserviceaccount.com \
               --allow-unauthenticated \
               --port=3000 \
               --memory=4Gi \
@@ -126,6 +127,7 @@ jobs:
             gcloud run deploy api-tuk \
               --image=$TAG:$CIRCLE_SHA1 \
               --region=$REGION \
+              --service-account=api-tuk@trigpointinguk.iam.gserviceaccount.com \
               --allow-unauthenticated \
               --port=3000 \
               --memory=4Gi \
