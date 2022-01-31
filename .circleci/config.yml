@@ -57,7 +57,7 @@ jobs:
             echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project trigpointinguk
             gcloud auth configure-docker $GCR
-            for version in latest $CIRCLE_SHA1 $CIRCLE_BUILD_NUM $CIRCLE_BRANCH ; do
+            for version in latest $CIRCLE_SHA1 $CIRCLE_BUILD_NUM $(echo -n $CIRCLE_BRANCH | sed 's%/%_%g') ; do
               docker tag tuk-api $TAG:$version
               docker push        $TAG:$version
             done
