@@ -195,10 +195,16 @@ export class Trig {
   uuid: string;
 
   // Foreign keys
-  @OneToMany((type) => Log, (log) => log.id)
+  @OneToMany(
+    /* istanbul ignore next */ (type) => Log,
+    /* istanbul ignore next */ (log) => log.id,
+  )
   @JoinColumn({ name: 'log_id' })
   logs: Log[];
 
-  @OneToMany((type) => Photo, (photo) => photo.trig)
+  @OneToMany(
+    /* istanbul ignore next */ (type) => Photo,
+    /* istanbul ignore next */ (photo) => photo.trig,
+  )
   photos: Photo[];
 }

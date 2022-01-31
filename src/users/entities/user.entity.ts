@@ -92,11 +92,17 @@ export class User {
   uuid: string;
 
   // Foreign keys
-  @OneToMany((type) => Log, (log) => log.id)
+  @OneToMany(
+    /* istanbul ignore next */ (type) => Log,
+    /* istanbul ignore next */ (log) => log.id,
+  )
   @JoinColumn({ name: 'log_id' })
   logs: Log[];
 
-  @OneToMany((type) => Photo, (photo) => photo.user)
+  @OneToMany(
+    /* istanbul ignore next */ (type) => Photo,
+    /* istanbul ignore next */ (photo) => photo.user,
+  )
   photos: Photo[];
 
   // TODO: allow for arbitrary number of bookmarked locations

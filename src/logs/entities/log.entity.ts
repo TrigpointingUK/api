@@ -16,7 +16,10 @@ export class Log {
   id: number;
 
   @Expose()
-  @ManyToOne((type) => Trig, (trig) => trig.id)
+  @ManyToOne(
+    /* istanbul ignore next */ (type) => Trig,
+    /* istanbul ignore next */ (trig) => trig.id,
+  )
   @JoinColumn({ name: 'trig_id' })
   trig: Trig;
 
@@ -29,7 +32,10 @@ export class Log {
   @Column({ type: 'float', nullable: true })
   wgs_lon?: number;
 
-  @OneToMany((type) => Photo, (photo) => photo.log)
+  @OneToMany(
+    /* istanbul ignore next */ (type) => Photo,
+    /* istanbul ignore next */ (photo) => photo.log,
+  )
   @JoinColumn({ name: 'photo_id' })
   photos: Photo[];
 }
