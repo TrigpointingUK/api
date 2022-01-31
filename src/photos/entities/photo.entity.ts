@@ -14,15 +14,24 @@ export class Photo {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne((type) => Trig, (trig) => trig.id)
+  @ManyToOne(
+    /* istanbul ignore next */ (type) => Trig,
+    /* istanbul ignore next */ (trig) => trig.id,
+  )
   @JoinColumn({ name: 'trig_id' })
   trig: Trig;
 
-  @ManyToOne((type) => User, (user) => user.id)
+  @ManyToOne(
+    /* istanbul ignore next */ (type) => User,
+    /* istanbul ignore next */ (user) => user.id,
+  )
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne((type) => Log, (log) => log.id)
+  @ManyToOne(
+    /* istanbul ignore next */ (type) => Log,
+    /* istanbul ignore next */ (log) => log.id,
+  )
   @JoinColumn({ name: 'log_id' })
   log: Log;
 
