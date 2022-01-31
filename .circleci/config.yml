@@ -57,10 +57,10 @@ jobs:
             echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project trigpointinguk
             gcloud auth configure-docker $GCR
-            for version in latest $CIRCLE_SHA1 $CIRCLE_BUILD_NUM $(echo -n $CIRCLE_BRANCH | sed 's%/%_%g') ; do
-              docker tag tuk-api $TAG:$version
-              docker push        $TAG:$version
-            done
+            docker tag tuk-api $TAG:$CIRCLE_SHA1
+            docker tag tuk-api $TAG:$CIRCLE_BUILD_NUM
+            docker tag tuk-api $TAG:$(echo -n $CIRCLE_BRANCH | sed 's%/%_%g')
+            docker push        $TAG
 
   api-deploy-tme:
     docker:
@@ -68,15 +68,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run:
-          name: Retag image
-          command: |
-            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
-            gcloud --quiet config set project trigpointinguk
-            gcloud auth configure-docker $GCR
-            docker pull $TAG:$CIRCLE_SHA1
-            docker tag  $TAG:$CIRCLE_SHA1 $TAG:tme
-            docker push $TAG:tme
       - run:
           name: Deploy to Cloud Run - api-tme
           command: |
@@ -104,6 +95,12 @@ jobs:
             POSTGRES_PASSWORD=TME_POSTGRES_PASSWORD:latest,\
             POSTGRES_DATABASE=TME_POSTGRES_DATABASE:latest,\
             AUTH0_CLIENT_ID=TME_SWAGGER_AUTH0_CLIENT_ID:latest,\
+      - run:
+          name: Retag image
+          command: |
+            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project trigpointinguk
+            gcloud artifacts docker tags add $TAG:$CIRCLE_SHA1 $TAG:tme
 
   api-deploy-tuk:
     docker:
@@ -111,16 +108,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run:
-          name: Retag image
-          command: |
-            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
-            gcloud --quiet config set project trigpointinguk
-            gcloud auth configure-docker $GCR
-            docker pull $TAG:$CIRCLE_SHA1
-            docker tag  $TAG:$CIRCLE_SHA1 $TAG:tuk
-            docker push $TAG:tuk
-
       - run:
           name: Deploy to Cloud Run - api-tuk
           command: |
@@ -148,6 +135,12 @@ jobs:
             POSTGRES_PASSWORD=TME_POSTGRES_PASSWORD:latest,\
             POSTGRES_DATABASE=TME_POSTGRES_DATABASE:latest,\
             AUTH0_CLIENT_ID=TME_SWAGGER_AUTH0_CLIENT_ID:latest,\
+      - run:
+          name: Retag image
+          command: |
+            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project trigpointinguk
+            gcloud artifacts docker tags add $TAG:$CIRCLE_SHA1 $TAG:tuk
 
 workflows:
   oncommit:
