@@ -37,7 +37,7 @@
     "cookie-parser": "^1.4.6",
     "dotenv": "^14.3.2",
     "jwks-rsa": "^2.0.5",
-    "passport": "^0.4.1",
+    "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "pg": "^8.7.1",
     "proj4": "^2.7.5",
