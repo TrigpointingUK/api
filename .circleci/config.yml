@@ -69,6 +69,11 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
+          name: Login to GCP
+          command: |
+            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project trigpointinguk
+      - run:
           name: Deploy to Cloud Run - api-tme
           command: |
             gcloud run deploy api-tme \
@@ -97,10 +102,7 @@ jobs:
             AUTH0_CLIENT_ID=TME_SWAGGER_AUTH0_CLIENT_ID:latest,\
       - run:
           name: Retag image
-          command: |
-            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
-            gcloud --quiet config set project trigpointinguk
-            gcloud artifacts docker tags add $TAG:$CIRCLE_SHA1 $TAG:tme
+          command: gcloud artifacts docker tags add $TAG:$CIRCLE_SHA1 $TAG:tme
 
   api-deploy-tuk:
     docker:
@@ -108,6 +110,11 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - run:
+          name: Login to GCP
+          command: |
+            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project trigpointinguk
       - run:
           name: Deploy to Cloud Run - api-tuk
           command: |
@@ -137,10 +144,7 @@ jobs:
             AUTH0_CLIENT_ID=TME_SWAGGER_AUTH0_CLIENT_ID:latest,\
       - run:
           name: Retag image
-          command: |
-            echo -n $GCLOUD_SERVICE_KEY | base64 -d | gcloud auth activate-service-account --key-file=-
-            gcloud --quiet config set project trigpointinguk
-            gcloud artifacts docker tags add $TAG:$CIRCLE_SHA1 $TAG:tuk
+          command: gcloud artifacts docker tags add $TAG:$CIRCLE_SHA1 $TAG:tuk
 
 workflows:
   oncommit:
