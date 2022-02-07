@@ -50,7 +50,7 @@ export class TrigsController {
    * Get details for a single trigpoint
    */
   @Get(':id')
-  @UseGuards(AuthGuard('tukjwt'), PermissionsGuard)
+  // @UseGuards(AuthGuard('tukjwt'), PermissionsGuard)
   findById(@Param('id', ParseIntPipe) id: number) {
     return this.trigsService.findById(+id);
   }
