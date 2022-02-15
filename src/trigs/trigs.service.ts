@@ -78,7 +78,9 @@ export class TrigsService {
     return this.trigsRepository.find();
   }
 
-  findById(id: number) {
+  async findById(id: number) {
+    if (id % 2 == 0) await new Promise((r) => setTimeout(r, 500)); // TODO: Only for testing!
+
     return this.trigsRepository.findOne(id);
   }
 
