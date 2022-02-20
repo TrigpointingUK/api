@@ -45,7 +45,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.4",
     "swagger-ui-express": "^4.3.0",
-    "typeorm": "^0.2.41",
+    "typeorm": "^0.2.43",
     "unique-names-generator": "^4.7.1"
   },
   "devDependencies": {
