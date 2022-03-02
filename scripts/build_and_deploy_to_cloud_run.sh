@@ -17,7 +17,7 @@ gcloud run deploy tuk-api \
   --update-env-vars MODE=DEV,\
 RUN_MIGRATIONS=true,\
 NEST_DEBUG=true,\
-AUTH0_ISSUER_URL=https://teasel.eu.auth0.com/,\
+AUTH0_ISSUER_URL=https://trigpointing.eu.auth0.com/,\
 AUTH0_AUDIENCE=https://api.trigpointing.me,\
 AUTH0_REDIRECT_URL=https://api.trigpointing.me/docs/oauth2-redirect.html,\
 NODE_TLS_REJECT_UNAUTHORIZED=0 \n
