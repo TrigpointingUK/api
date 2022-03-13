@@ -12,7 +12,7 @@ First start the Google Cloud SQL Proxy on your local machine, pointing to the T:
 
 ```bash
 ./cloud_sql_proxy --instances=trigpointinguk:europe-west1:trigpointing-6b5de36a=tcp:5432
-
+With POSTGRES_HOSTNAME=127.0.0.1
 ```
 
 ### Local PSQL client
@@ -28,9 +28,9 @@ Cloud Run -> Serverless VPC Connector -> VPC -> Cloud SQL
 
 #### Option 2
 Cloud Run -> Cloud SQL Proxy -> Cloud SQL
-- requires TypeORM socketPath support for postgres, which I'm not convinced exists
-- ./cloud_sql_proxy --dir=/cloudsql --instances=trigpointinguk:europe-west1:trigpointing-6b5de36a=unix:/cloudsql/trigpointinguk:europe-west1:trigpointing-6b5de36a
-
+- Local testing: 
+./cloud_sql_proxy --dir=/cloudsql --instances=trigpointinguk:europe-west1:trigpointing-6b5de36a=unix:/cloudsql/trigpointinguk:europe-west1:trigpointing-6b5de36a
+With POSTGRES_SOCKET=/cloudsql/trigpointinguk:europe-west1:trigpointing-6b5de36a
 
 
 
