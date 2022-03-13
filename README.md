@@ -16,11 +16,15 @@ psql "host=127.0.0.1 sslmode=disable dbname=tme user=ian"
 ``` -->
 
 ```bash
-# Start sql proxy using the same socket path that CloudRun uses, just because...
-./cloud_sql_proxy -enable_iam_login --dir=/cloudsql --instances=trigpointinguk:europe-west1:trigpointing-679c4ef1=unix:/cloudsql/trigpointinguk:europe-west1:trigpointing-679c4ef1
+# Start sql proxy using the same socket path that CloudRun uses...
+./cloud_sql_proxy --dir=/cloudsql --instances=trigpointinguk:europe-west1:trigpointing-679c4ef1=unix:/cloudsql/trigpointinguk:europe-west1:trigpointing-679c4ef1
 
 # Connect with a postgres username/password...
 psql "host=/cloudsql/trigpointinguk:europe-west1:trigpointing-679c4ef1 dbname=tme user=postgres"
+
+
+#...or in hope of things to come...
+./cloud_sql_proxy -enable_iam_login --dir=/cloudsql --instances=trigpointinguk:europe-west1:trigpointing-679c4ef1=unix:/cloudsql/trigpointinguk:europe-west1:trigpointing-679c4ef1
 # Connect with a GCP user...
 gcloud auth login admin@trigpointing.uk
 psql "host=/cloudsql/trigpointinguk:europe-west1:trigpointing-679c4ef1 dbname=tme user=admin@trigpointing.uk"
