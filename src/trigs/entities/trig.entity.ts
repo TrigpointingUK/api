@@ -107,19 +107,19 @@ export class Trig {
   })
   osgb_point?: Point;
 
-  @Column({ type: 'char', length: 10, nullable: true })
+  @Column({ type: 'varchar', length: 10, nullable: true })
   fb_number?: string;
 
-  @Column({ type: 'char', length: 20, nullable: true })
+  @Column({ type: 'varchar', length: 20, nullable: true })
   stn_number?: string;
 
-  @Column({ type: 'char', length: 20, nullable: true })
+  @Column({ type: 'varchar', length: 20, nullable: true })
   stn_number_active?: string;
 
-  @Column({ type: 'char', length: 20, nullable: true })
+  @Column({ type: 'varchar', length: 20, nullable: true })
   stn_number_passive?: string;
 
-  @Column({ type: 'char', length: 20, nullable: true })
+  @Column({ type: 'varchar', length: 20, nullable: true })
   stn_number_osgb36?: string;
 
   @Column({ type: 'int', nullable: true })
@@ -134,10 +134,10 @@ export class Trig {
   @Column({ type: 'char', length: 6, nullable: true })
   postcode6?: string;
 
-  @Column({ type: 'char', length: 20, nullable: true })
+  @Column({ type: 'varchar', length: 20, nullable: true })
   county?: string;
 
-  @Column({ type: 'char', length: 50, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   town?: string;
 
   @Exclude()

@@ -20,7 +20,7 @@ export class TrigsService {
   create(createTrigDto: CreateTrigDto): Promise<Trig> {
     const trig = new Trig();
     Object.keys(createTrigDto).forEach((key) => {
-      trig[key] = createTrigDto[key];
+      trig[key] = createTrigDto[key] ? createTrigDto[key] : null;
     });
 
     // Fill empty osgb values
@@ -58,13 +58,18 @@ export class TrigsService {
       trig.wgs_point = wgs_point;
     }
 
-    // Create Geometry for OSGB
     if (trig.osgb_eastings != null && trig.osgb_northings != null) {
+      // Create Geometry for OSGB
       const osgb_point: Point = {
         type: 'Point',
         coordinates: [trig.osgb_eastings, trig.osgb_northings],
       };
       trig.osgb_point = osgb_point;
+      // Generate Grid Reference
+      trig.osgb_gridref = this.coordsService.toGridRef({
+        ea: trig.osgb_eastings,
+        no: trig.osgb_northings,
+      });
     }
 
     // Soft undelete
@@ -75,7 +80,7 @@ export class TrigsService {
   }
 
   findAll() {
-    return this.trigsRepository.find();
+    return this.trigsRepository.find({take: 10});
   }
 
   async findById(id: number) {
