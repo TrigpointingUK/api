@@ -17,23 +17,26 @@ import { CoordsService } from './coords/coords.service';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get('POSTGRES_HOST'),
-        port: +configService.get<number>('POSTGRES_PORT'),
-        username: configService.get('POSTGRES_USER'),
-        password: configService.get('POSTGRES_PASSWORD'),
-        database: configService.get('POSTGRES_DATABASE'),
-        autoLoadEntities: true,
-        synchronize: true,
-        migrationsTableName: 'migration',
-        migrations: ['src/migration/*.ts'],
-        cli: { migrationsDir: 'src/migration' },
-        extra: {
-          ssl: true,
-        },
-        ssl: { rejectUnauthorized: false },
-      }),
+      useFactory: (configService: ConfigService) => {
+        const socketPath = configService.get('POSTGRES_SOCKET');
+        const extra = socketPath ? {
+            socketPath: socketPath,
+        } : { };
+
+        return ({
+          type: 'postgres',
+          host: socketPath || configService.get('POSTGRES_HOSTNAME'),
+          username: configService.get('POSTGRES_USERNAME'),
+          password: configService.get('POSTGRES_PASSWORD'),
+          database: configService.get('POSTGRES_DATABASE'),
+          autoLoadEntities: true,
+          synchronize: true,
+          migrationsTableName: 'migration',
+          migrations: ['src/migration/*.ts'],
+          cli: { migrationsDir: 'src/migration' },
+          extra: extra
+        })
+      },
     }),
     TrigsModule,
     LogsModule,

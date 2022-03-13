@@ -6,6 +6,46 @@ The current TrigpointingUK website uses outdated PHP code, which does not meet m
 security expectations, and which relies on AWS functionality due to be deprecated in
 August 2022. This repo houses the development of a more cloud native codebase.
 
+### Running locally
+
+First start the Google Cloud SQL Proxy on your local machine, pointing to the T:UK CloudSQL instance:
+
+```bash
+./cloud_sql_proxy --instances=trigpointinguk:europe-west1:trigpointing-6b5de36a=tcp:5432
+With POSTGRES_HOSTNAME=127.0.0.1
+```
+
+### Local PSQL client
+
+```bash
+psql "host=127.0.0.1 sslmode=disable dbname=tme user=ian"
+
+```
+
+#### Option 1
+Cloud Run -> Serverless VPC Connector -> VPC -> Cloud SQL
+- VPC Connector costs money for an instance
+
+#### Option 2
+Cloud Run -> Cloud SQL Proxy -> Cloud SQL
+- Local testing: 
+./cloud_sql_proxy --dir=/cloudsql --instances=trigpointinguk:europe-west1:trigpointing-6b5de36a=unix:/cloudsql/trigpointinguk:europe-west1:trigpointing-6b5de36a
+With POSTGRES_SOCKET=/cloudsql/trigpointinguk:europe-west1:trigpointing-6b5de36a
+
+
+
+#### Option 3
+Cloud Run -> direct ssl connection -> Cloud SQL
+- Tried once and failed - that's why Google wrote the proxy!
+
+#### Option 4
+Cloud Run -> unencrypted -> Cloud SQL
+- Poor security
+
+
+
+
+
 ## Test results - Main branch
 
 [![codecov](https://codecov.io/gh/TrigpointingUK/api/branch/main/graph/badge.svg?token=WAG6U0E2S6)](https://codecov.io/gh/TrigpointingUK/api)
