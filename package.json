@@ -62,7 +62,7 @@
     "@types/passport-jwt": "^3.0.6",
     "@types/proj4": "^2.5.2",
     "@types/supertest": "^2.0.11",
-    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/eslint-plugin": "^5.14.0",
     "@typescript-eslint/parser": "^5.12.1",
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.4.0",
@@ -76,7 +76,7 @@
     "supertest": "^6.2.2",
     "ts-jest": "^27.0.3",
     "ts-loader": "^9.2.3",
-    "ts-node": "^10.5.0",
+    "ts-node": "^10.7.0",
     "tsconfig-paths": "^3.10.1",
     "typescript": "^4.6.2"
   },
