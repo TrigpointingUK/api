@@ -93,7 +93,7 @@ jobs:
             AUTH0_ISSUER_URL=https://trigpointing.eu.auth0.com/,\
             AUTH0_AUDIENCE=https://api.trigpointing.me,\
             AUTH0_REDIRECT_URL=https://api.trigpointing.me/docs/oauth2-redirect.html,\
-            POSTGRES_SOCKET=/cloudsql/trigpointinguk:europe-west1:trigpointing-6b5de36a
+            POSTGRES_SOCKET=/cloudsql/trigpointinguk:europe-west1:trigpointing-6b5de36a,\
             POSTGRES_USERNAME=postgres,\
             POSTGRES_DATABASE=tme,\
               --update-secrets \
@@ -133,7 +133,7 @@ jobs:
             AUTH0_ISSUER_URL=https://trigpointing.eu.auth0.com/,\
             AUTH0_AUDIENCE=https://api.trigpointing.me,\
             AUTH0_REDIRECT_URL=https://api.trigpointing.me/docs/oauth2-redirect.html,\
-            POSTGRES_SOCKET=/cloudsql/trigpointinguk:europe-west1:trigpointing-6b5de36a
+            POSTGRES_SOCKET=/cloudsql/trigpointinguk:europe-west1:trigpointing-6b5de36a,\
             POSTGRES_USERNAME=postgres,\
             POSTGRES_DATABASE=tuk,\
               --update-secrets \
