@@ -24,8 +24,9 @@ psql "host=/cloudsql/trigpointinguk:europe-west1:trigpointing-679c4ef1 dbname=tm
 # Connect with a GCP user...
 gcloud auth login admin@trigpointing.uk
 psql "host=/cloudsql/trigpointinguk:europe-west1:trigpointing-679c4ef1 dbname=tme user=admin@trigpointing.uk"
-# Connect as a Service Account...
+# Connect as a Service Account... (NB not supported by Cloud Run!)
 gcloud iam service-accounts keys create --iam-account=api-tme@trigpointinguk.iam.gserviceaccount.com - | gcloud auth activate-service-account --key-file -
+psql "host=/cloudsql/trigpointinguk:europe-west1:trigpointing-679c4ef1 dbname=tme user=api-tme@trigpointinguk.iam"
 
 ```
 

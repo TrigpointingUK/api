@@ -9,7 +9,7 @@ docker tag tuk-api:latest europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-
 docker push europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:latest
 
 gcloud run deploy api-tme \
-  --image=europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:tme \
+  --image=europe-west1-docker.pkg.dev/trigpointinguk/images/tuk-api:latest \
   --region=europe-west1 \
   --service-account=api-tme@trigpointinguk.iam.gserviceaccount.com \
   --allow-unauthenticated \
