@@ -95,7 +95,7 @@ jobs:
             AUTH0_AUDIENCE=https://api.trigpointing.me,\
             AUTH0_REDIRECT_URL=https://api.trigpointing.me/docs/oauth2-redirect.html,\
             POSTGRES_SOCKET=/cloudsql/$POSTGRES_CONNECTION,\
-            POSTGRES_USERNAME=postgres,\
+            POSTGRES_USERNAME=api-tme@trigpointinguk.iam,\
             POSTGRES_DATABASE=tme,\
               --update-secrets \
             POSTGRES_PASSWORD=TME_POSTGRES_PASSWORD:latest,\

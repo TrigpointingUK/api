@@ -10,15 +10,28 @@ August 2022. This repo houses the development of a more cloud native codebase.
 
 First start the Google Cloud SQL Proxy on your local machine, pointing to the T:UK CloudSQL instance:
 
+<!-- ```bash
+./cloud_sql_proxy --instances=trigpointinguk:europe-west1:trigpointing-679c4ef1=tcp:5432
+psql "host=127.0.0.1 sslmode=disable dbname=tme user=ian"
+``` -->
+
 ```bash
-./cloud_sql_proxy --instances=trigpointinguk:europe-west1:trigpointing-6b5de36a=tcp:5432
-With POSTGRES_HOSTNAME=127.0.0.1
+# Start sql proxy using the same socket path that CloudRun uses, just because...
+./cloud_sql_proxy -enable_iam_login --dir=/cloudsql --instances=trigpointinguk:europe-west1:trigpointing-679c4ef1=unix:/cloudsql/trigpointinguk:europe-west1:trigpointing-679c4ef1
+
+# Connect with a postgres username/password...
+psql "host=/cloudsql/trigpointinguk:europe-west1:trigpointing-679c4ef1 dbname=tme user=postgres"
+# Connect with a GCP user...
+gcloud auth login admin@trigpointing.uk
+psql "host=/cloudsql/trigpointinguk:europe-west1:trigpointing-679c4ef1 dbname=tme user=admin@trigpointing.uk"
+# Connect as a Service Account...
+gcloud iam service-accounts keys create --iam-account=api-tme@trigpointinguk.iam.gserviceaccount.com - | gcloud auth activate-service-account --key-file -
+
 ```
 
 ### Local PSQL client
 
 ```bash
-psql "host=127.0.0.1 sslmode=disable dbname=tme user=ian"
 
 ```
 
@@ -30,6 +43,7 @@ Cloud Run -> Serverless VPC Connector -> VPC -> Cloud SQL
 Cloud Run -> Cloud SQL Proxy -> Cloud SQL
 - Local testing: 
 ./cloud_sql_proxy --dir=/cloudsql --instances=trigpointinguk:europe-west1:trigpointing-6b5de36a=unix:/cloudsql/trigpointinguk:europe-west1:trigpointing-6b5de36a
+
 With POSTGRES_SOCKET=/cloudsql/trigpointinguk:europe-west1:trigpointing-6b5de36a
 
 
