@@ -37,23 +37,23 @@ export class CreateTrigDto {
 
   @Min(-100)
   @IsOptional()
-  wgs_height: number;
+  wgs_height?: number;
 
   @Min(0)
   @IsOptional()
-  osgb_eastings: number;
+  osgb_eastings?: number;
 
   @Min(0)
   @IsOptional()
-  osgb_northings: number;
+  osgb_northings?: number;
 
   @Min(-100)
   @IsOptional()
-  osgb_height: number;
+  osgb_height?: number;
 
   @Length(14, 14)
   @IsOptional()
-  osgb_gridref: string;
+  osgb_gridref?: string;
 
   @IsEnum(PhysicalType)
   physical_type: PhysicalType;
@@ -92,7 +92,7 @@ export class CreateTrigDto {
 
   @Min(0)
   @IsOptional()
-  os_net_web_id: number;
+  os_net_web_id?: number;
 
   @IsBoolean()
   @IsOptional()
