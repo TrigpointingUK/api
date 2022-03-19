@@ -13,5 +13,5 @@ export class MyUserDto {
   units: Units;
   status_max: Status;
   licence_default: Licence;
-  mobile_number: number;
+  mobile_number: string;
 }

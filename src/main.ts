@@ -72,7 +72,7 @@ async function bootstrap() {
     .build();
   const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
   const swaggerOptions = {
-    customSiteTitle: 'TUK CLI',
+    customSiteTitle: 'TUK API',
     explorer: true,
     swaggerOptions: {
       persistAuthorization: true,

@@ -32,10 +32,10 @@ export class UsersController {
    * Create a new user
    */
   @Post()
-  @UseGuards(AuthGuard('tukjwt'), PermissionsGuard)
-  @Permissions('create:users')
-  @ApiBearerAuth('jwt') // swagger
-  @ApiOAuth2([]) // swagger
+  // @UseGuards(AuthGuard('tukjwt'), PermissionsGuard)
+  // @Permissions('create:users')
+  // @ApiBearerAuth('jwt') // swagger
+  // @ApiOAuth2([]) // swagger
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }

@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsNumber,
   IsOptional,
+  IsPhoneNumber,
   IsPositive,
   IsUrl,
   Length,
@@ -16,56 +17,56 @@ export class CreateUserDto {
   @IsPositive()
   id: number;
 
-  @Length(3, 50)
+  @Length(1, 50)
   nickname: string;
 
   @IsOptional()
-  @IsEmail()
-  email: string;
+  // @IsEmail()
+  email?: string;
 
   @IsBoolean()
   email_verified: boolean;
 
   @IsOptional()
   @MaxLength(256)
-  oauth: string;
+  oauth?: string;
 
   @IsOptional()
   @MaxLength(50)
-  firstname: string;
+  firstname?: string;
 
   @IsOptional()
   @MaxLength(50)
-  lastname: string;
+  lastname?: string;
 
   @IsOptional()
-  about: string;
+  about?: string;
 
   @IsOptional()
   @MaxLength(1024)
-  homepage: string;
+  homepage?: string;
 
   @IsOptional()
   @IsUrl()
-  avatar: string;
+  avatar?: string;
 
   @IsOptional()
   @IsEnum(Units)
-  units: Units;
+  units?: Units;
 
   @IsOptional()
   @IsEnum(Status)
-  status_max: Status;
+  status_max?: Status;
 
   @IsOptional()
   @IsEnum(Licence)
-  licence_default: Licence;
+  licence_default?: Licence;
 
   @IsOptional()
-  @IsNumber()
-  mobile_number: number;
+  @IsPhoneNumber("GB")
+  mobile_number?: string;
 
   @IsOptional()
   @MaxLength(64)
-  cryptpw: string;
+  cryptpw?: string;
 }

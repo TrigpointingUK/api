@@ -10,6 +10,7 @@ import { PhotosModule } from './photos/photos.module';
 import { UsersModule } from './users/users.module';
 import { AuthzModule } from './authz/authz.module';
 import { CoordsService } from './coords/coords.service';
+import { CoordsModule } from './coords/coords.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { CoordsService } from './coords/coords.service';
     PhotosModule,
     UsersModule,
     AuthzModule,
+    CoordsModule,
   ],
   controllers: [AppController],
   providers: [ConfigService, AppService, CoordsService],
