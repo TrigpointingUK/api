@@ -11,7 +11,7 @@ import {
   IsEnum,
 } from 'class-validator';
 import { isNumber } from 'lodash';
-import { TrigCondition } from 'src/enum_types';
+import { LogSource, TrigCondition } from 'src/enum_types';
 
 export class CreateLogDto {
   @IsOptional()
@@ -28,7 +28,8 @@ export class CreateLogDto {
   visit_timestamp: Date;
 
   @Length(0, 50)
-  comment: string;
+  @IsOptional()
+  comment?: string;
 
   @IsLatitude()
   @IsOptional()
@@ -64,5 +65,10 @@ export class CreateLogDto {
 
   @IsEnum(TrigCondition)
   condition: TrigCondition;
+
+  @IsEnum(LogSource)
+  @IsOptional()
+  source?: LogSource;
+
 
 }

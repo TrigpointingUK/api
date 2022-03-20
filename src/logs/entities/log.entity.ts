@@ -16,12 +16,12 @@ import {
   VersionColumn,
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
-import { TrigCondition } from 'src/enum_types';
+import { LogSource, TrigCondition } from 'src/enum_types';
 import { Point } from 'geojson';
 
 @Entity()
 export class Log {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('identity')
   id: number;
 
   @Expose()
@@ -44,7 +44,7 @@ export class Log {
   visit_timestamp: Date;
 
 
-  @Column({ type: 'varchar', length: 300 })
+  @Column({ type: 'varchar', length: 300, nullable: true })
   comment: string;
 
   @Column({ type: 'float', nullable: true })
@@ -73,7 +73,7 @@ export class Log {
     type: 'geography',
     spatialFeatureType: 'Point',
     srid: 4326,
-    nullable: false,
+    nullable: true,
   })
   wgs_point: Point;
 
@@ -91,6 +91,10 @@ export class Log {
 
   @Column({ type: 'enum', enum: TrigCondition, default: TrigCondition.UNKNOWN })
   condition: TrigCondition;
+
+  @Column({ type: 'enum', enum: LogSource, default: LogSource.UNKNOWN })
+  source: LogSource;
+
 
   // Maybe create abstract class for these columns?
   @Exclude()

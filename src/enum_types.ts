@@ -89,3 +89,9 @@ export enum Licence {
   PRIVATE = 'private',
   BY_ATTRIBUTION = 'attribution',
 }
+
+export enum LogSource {
+  ANDROID_APP = 'A',
+  WEBSITE = 'W',
+  UNKNOWN = 'U',
+}
