@@ -40,11 +40,16 @@ export class Log {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
+  @Column({ type: 'date', nullable: false })
+  visit_date: Date;
+
+  @Column({ type: 'time', nullable: true })
+  visit_time?: Date;
+
   @Column({ type: 'timestamp' })
   visit_timestamp: Date;
 
-
-  @Column({ type: 'varchar', length: 300, nullable: true })
+  @Column({ type: 'text', nullable: true })
   comment: string;
 
   @Column({ type: 'float', nullable: true })

@@ -36,8 +36,8 @@ export class LogsService {
     log.trig = trig
 
     const user: User = await this.usersService.findById(createLogDto.user_id);
-    if (!trig) {
-      throw new NotFoundException(`Trig ${createLogDto.trig_id} not found.`);
+    if (!user) {
+      throw new NotFoundException(`User ${createLogDto.user_id} not found.`);
     }
     log.user = user
 

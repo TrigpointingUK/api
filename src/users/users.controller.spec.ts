@@ -24,7 +24,7 @@ const user01: User = {
   units: Units.METRIC,
   status_max: Status.CONTROVERSIAL,
   licence_default: Licence.PUBLIC_DOMAIN,
-  mobile_number: 1234567890,
+  mobile_number: "1234567890",
   cryptpw: 'verysecret',
   uuid: 'uuid01',
   logs: [],
@@ -46,7 +46,7 @@ const newUser: CreateUserDto = {
   units: Units.METRIC,
   status_max: Status.PILLAR,
   licence_default: Licence.PUBLIC_DOMAIN,
-  mobile_number: 0,
+  mobile_number: "0",
   cryptpw: '',
 };
 const updateUser: UpdateUserDto = {

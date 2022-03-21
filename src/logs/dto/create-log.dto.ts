@@ -9,9 +9,11 @@ import {
   IsNumber,
   Min,
   IsEnum,
+  IsMilitaryTime,
 } from 'class-validator';
 import { isNumber } from 'lodash';
 import { LogSource, TrigCondition } from 'src/enum_types';
+import { Timestamp } from 'typeorm';
 
 export class CreateLogDto {
   @IsOptional()
@@ -25,9 +27,16 @@ export class CreateLogDto {
   user_id: number;
 
   @IsDateString()
+  visit_date: Date;
+
+  @IsMilitaryTime()
+  @IsOptional()
+  visit_time?: Date;
+
+  @IsDateString()
   visit_timestamp: Date;
 
-  @Length(0, 50)
+  @Length(0, 20000)
   @IsOptional()
   comment?: string;
 
@@ -43,7 +52,7 @@ export class CreateLogDto {
   @IsOptional()
   wgs_height?: number;
 
-  @Min(0)
+  // @Min(0)
   @IsOptional()
   osgb_eastings?: number;
 

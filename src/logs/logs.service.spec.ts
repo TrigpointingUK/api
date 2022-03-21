@@ -9,21 +9,82 @@ import { Repository } from 'typeorm';
 import { UpdateLogDto } from './dto/update-log.dto';
 import { CreateLogDto } from './dto/create-log.dto';
 import { NotFoundException } from '@nestjs/common';
+import { UsersService } from 'src/users/users.service';
+import { User } from 'src/users/entities/user.entity';
+import { Licence, LogSource, Status, TrigCondition, Units } from 'src/enum_types';
+import { UpdateUserDto } from 'src/users/dto/update-user.dto';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { MyUserDto } from 'src/users/dto/my-user.dto';
 
 const log01: Log = {
   id: 1,
   trig: new Trig(),
-  text: '',
+  user: new User(),
+  visit_date: new Date(),
+  visit_time: new Date(),
+  visit_timestamp: new Date(),
+  comment: "log01",
+  wgs_lat: 51,
+  wgs_lon: -1,
+  wgs_height: 0,
+  osgb_eastings: 470267.34536504897,
+  osgb_northings: 122765.53816158895,
+  wgs_point: { type: 'Point', coordinates: [-1, 51] },
+  osgb_point: {
+    type: 'Point',
+    coordinates: [470267, 122765],
+  },
+  osgb_height: 0,
+  fb_number: "testFB",
+  condition: TrigCondition.GOOD,
+  source: LogSource.UNKNOWN,
+  uuid: "Test01UUID",
   photos: [],
 };
 
 const logArray = [{ log01 }, { log01 }];
-const createLog: CreateLogDto = {
-  text: 'initial text',
-  id: 0,
-  trig_id: 0,
+const createLog01: CreateLogDto = {
+  id: 1,
+  trig_id: 1,
+  user_id: 1,
+  visit_date: new Date(),
+  visit_time: new Date(),
+  visit_timestamp: new Date(),
+  comment: "Initial",
+  wgs_lat: 51,
+  wgs_lon: -1,
+  wgs_height: 0,
+  osgb_eastings: null,
+  osgb_northings: null,
+  osgb_height: 0,
+  osgb_gridref: null,
+  fb_number: "fb01",
+  condition: TrigCondition.GOOD,
+  source: LogSource.UNKNOWN
+
 };
-const updLog: UpdateLogDto = { text: 'updated' };
+const createLog02: CreateLogDto = {
+  id: 1,
+  trig_id: 1,
+  user_id: 1,
+  visit_date: new Date(),
+  visit_time: new Date(),
+  visit_timestamp: new Date(),
+  comment: "Initial",
+  wgs_lat: null,
+  wgs_lon: null,
+  wgs_height: 0,
+  osgb_eastings: 470267.34536504897,
+  osgb_northings: 122765.53816158895,
+  osgb_height: 0,
+  osgb_gridref: null,
+  fb_number: "fb01",
+  condition: TrigCondition.GOOD,
+  source: LogSource.UNKNOWN
+
+};
+
+const updLog: UpdateLogDto = { comment: 'updated' };
 
 const trig01: Trig = {
   id: 1,
@@ -32,9 +93,84 @@ const trig01: Trig = {
 
 const trigArray = [{ trig01 }, { trig01 }];
 
+
+
+const user01: User = {
+  id: 1,
+  nickname: 'user1',
+  email: 'email1@example.com',
+  email_verified: true,
+  oauth: 'testoauth',
+  firstname: 'Test',
+  lastname: 'User',
+  about: 'about me',
+  homepage: 'http://example.com',
+  avatar: 'http://avatar.com/avatar1',
+  units: Units.METRIC,
+  status_max: Status.CONTROVERSIAL,
+  licence_default: Licence.PUBLIC_DOMAIN,
+  mobile_number: "1234567890",
+  cryptpw: 'verysecret',
+  uuid: 'uuid01',
+  logs: [],
+  photos: [],
+};
+
+const user01Dto: CreateUserDto = {
+  id: 1,
+  nickname: 'user1',
+  email: 'email1@example.com',
+  email_verified: true,
+  oauth: 'testoauth',
+  firstname: 'Test',
+  lastname: 'User',
+  about: 'about me',
+  homepage: 'http://example.com',
+  avatar: 'http://avatar.com/avatar1',
+  units: Units.METRIC,
+  status_max: Status.CONTROVERSIAL,
+  licence_default: Licence.PUBLIC_DOMAIN,
+  mobile_number: "1234567890",
+  cryptpw: 'verysecret',
+};
+
+const myUser01Dto: MyUserDto = {
+  id: 1,
+  nickname: 'user1',
+  email: 'email1@example.com',
+  email_verified: true,
+  firstname: 'Test',
+  lastname: 'User',
+  about: 'about me',
+  homepage: 'http://example.com',
+  avatar: 'http://avatar.com/avatar1',
+  units: Units.METRIC,
+  status_max: Status.CONTROVERSIAL,
+  licence_default: Licence.PUBLIC_DOMAIN,
+  mobile_number: "1234567890",
+};
+
+const updateMyUser01: UpdateUserDto = {
+  nickname: 'NewNickname',
+};
+
+const auth0ResultsUser01: Object = {
+  sub: 'mockauth0',
+  picture: 'http://avatar.com/avatar1',
+  email: 'email1@example.com',
+  email_verified: true,
+  given_name: 'Test',
+  family_name: 'User',
+};
+
+const userArray = [{ user01 }, { user01 }];
+
+
+
 describe('LogsService', () => {
   let service: LogsService;
   let trigsService: TrigsService;
+  let usersService: UsersService;
   let repository: Repository<Log>;
 
   let repoSaveSpy: jest.SpyInstance;
@@ -68,11 +204,23 @@ describe('LogsService', () => {
             softDelete: jest.fn(),
           },
         },
+        UsersService,
+        {
+          provide: getRepositoryToken(User),
+          useValue: {
+            find: jest.fn().mockResolvedValue(userArray),
+            findOne: jest.fn().mockResolvedValue(user01),
+            save: jest.fn().mockResolvedValue(user01),
+            remove: jest.fn(),
+            softDelete: jest.fn(),
+          },
+        },        
       ],
     }).compile();
 
     service = module.get<LogsService>(LogsService);
     trigsService = module.get<TrigsService>(TrigsService);
+    usersService = module.get<UsersService>(UsersService);
     repository = module.get<Repository<Log>>(getRepositoryToken(Log));
 
     repoFindSpy = jest.spyOn(repository, 'find');
@@ -87,19 +235,32 @@ describe('LogsService', () => {
   });
 
   describe('create', () => {
-    it('should create a new log', async () => {
-      const r1 = await service.create(createLog);
+    it('should create a new log, given wgs coords', async () => {
+      const r1 = await service.create(createLog01);
       expect(r1).toEqual(log01);
+      expect(repoSaveSpy).toHaveBeenCalled();
+    });
+    it('should create a new log, given osgb coords', async () => {
+      const r1 = await service.create(createLog02);
+      expect(r1.wgs_lat).not.toBeNull;
       expect(repoSaveSpy).toHaveBeenCalled();
     });
     it('should fail to create a log for an invalid trigpoint', async () => {
       expect(trigsService).toBeDefined();
       jest.spyOn(trigsService, 'findById').mockImplementation(() => undefined);
-      await expect(service.create(createLog)).rejects.toEqual(
+      await expect(service.create(createLog01)).rejects.toEqual(
         expect.any(NotFoundException),
       );
       expect(repoSaveSpy).not.toHaveBeenCalled();
     });
+    it('should fail to create a log for an invalid user', async () => {
+      expect(usersService).toBeDefined();
+      jest.spyOn(usersService, 'findById').mockImplementation(() => undefined);
+      await expect(service.create(createLog01)).rejects.toEqual(
+        expect.any(NotFoundException),
+      );
+      expect(repoSaveSpy).not.toHaveBeenCalled();
+    });    
   });
 
   describe('read', () => {
@@ -119,7 +280,7 @@ describe('LogsService', () => {
     it('should update records', async () => {
       const r1 = await service.update(1, updLog);
       expect(r1).toEqual(log01);
-      expect(repoSaveSpy).toHaveBeenCalledWith({ id: 1, text: 'updated' });
+      expect(repoSaveSpy).toHaveBeenCalledWith({ id: 1, comment: 'updated' });
     });
   });
 
