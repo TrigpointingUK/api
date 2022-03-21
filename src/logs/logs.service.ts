@@ -10,6 +10,7 @@ import { User } from 'src/users/entities/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { CoordsService } from 'src/coords/coords.service';
 import { Point } from 'geojson';
+import { ConfigModule } from '@nestjs/config';
 
 @Injectable()
 export class LogsService {
@@ -24,7 +25,7 @@ export class LogsService {
   async create(createLogDto: CreateLogDto): Promise<Log> {
     const log = new Log()
     Object.keys(createLogDto).forEach((key) => {
-      log[key] = createLogDto[key] ? createLogDto[key] : null;
+      log[key] = (createLogDto[key] === "") ? null : createLogDto[key];
     });
 
 
@@ -34,12 +35,14 @@ export class LogsService {
       throw new NotFoundException(`Trig ${createLogDto.trig_id} not found.`);
     }
     log.trig = trig
+    delete log['trig_id']
 
     const user: User = await this.usersService.findById(createLogDto.user_id);
     if (!user) {
       throw new NotFoundException(`User ${createLogDto.user_id} not found.`);
     }
     log.user = user
+    delete log['user_id']
 
     // Fill empty osgb values
     if (
@@ -90,10 +93,19 @@ export class LogsService {
       });
     }
 
+    // Date handling
+    if (createLogDto.visit_timestamp == null) {
+      try {
+        const dateParts = createLogDto.visit_date.split("-");
+        const timeParts = createLogDto.visit_time.split(":");
+        log.visit_timestamp = new Date(parseInt(dateParts[0]), parseInt(dateParts[1])-1, parseInt(dateParts[2]), parseInt(timeParts[0]), parseInt(timeParts[1]), parseInt(timeParts[2]));
+      } catch(exception) {
+        log.visit_timestamp = new Date()
+      }
+    }
+
 
     log.deletedAt = null;
-
-
 
     return this.logsRepository.save(log);
   }

@@ -11,9 +11,7 @@ import {
   IsEnum,
   IsMilitaryTime,
 } from 'class-validator';
-import { isNumber } from 'lodash';
 import { LogSource, TrigCondition } from 'src/enum_types';
-import { Timestamp } from 'typeorm';
 
 export class CreateLogDto {
   @IsOptional()
@@ -27,14 +25,16 @@ export class CreateLogDto {
   user_id: number;
 
   @IsDateString()
-  visit_date: Date;
+  @IsOptional()
+  visit_date?: string;
 
   @IsMilitaryTime()
   @IsOptional()
-  visit_time?: Date;
+  visit_time?: string;
 
   @IsDateString()
-  visit_timestamp: Date;
+  @IsOptional()
+  visit_timestamp?: Date;
 
   @Length(0, 20000)
   @IsOptional()

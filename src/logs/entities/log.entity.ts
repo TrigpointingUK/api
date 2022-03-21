@@ -40,12 +40,6 @@ export class Log {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @Column({ type: 'date', nullable: false })
-  visit_date: Date;
-
-  @Column({ type: 'time', nullable: true })
-  visit_time?: Date;
-
   @Column({ type: 'timestamp' })
   visit_timestamp: Date;
 
@@ -145,7 +139,7 @@ export class Log {
   @Exclude()
   @Column()
   @Generated('uuid')
-  uuid: string;
+  uuid?: string;
 
   // Foreign keys
   @OneToMany(
@@ -153,5 +147,5 @@ export class Log {
     /* istanbul ignore next */ (photo) => photo.log,
   )
   @JoinColumn({ name: 'photo_id' })
-  photos: Photo[];
+  photos?: Photo[];
 }

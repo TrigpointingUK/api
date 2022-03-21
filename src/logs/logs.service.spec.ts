@@ -16,76 +16,6 @@ import { UpdateUserDto } from 'src/users/dto/update-user.dto';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { MyUserDto } from 'src/users/dto/my-user.dto';
 
-const log01: Log = {
-  id: 1,
-  trig: new Trig(),
-  user: new User(),
-  visit_date: new Date(),
-  visit_time: new Date(),
-  visit_timestamp: new Date(),
-  comment: "log01",
-  wgs_lat: 51,
-  wgs_lon: -1,
-  wgs_height: 0,
-  osgb_eastings: 470267.34536504897,
-  osgb_northings: 122765.53816158895,
-  wgs_point: { type: 'Point', coordinates: [-1, 51] },
-  osgb_point: {
-    type: 'Point',
-    coordinates: [470267, 122765],
-  },
-  osgb_height: 0,
-  fb_number: "testFB",
-  condition: TrigCondition.GOOD,
-  source: LogSource.UNKNOWN,
-  uuid: "Test01UUID",
-  photos: [],
-};
-
-const logArray = [{ log01 }, { log01 }];
-const createLog01: CreateLogDto = {
-  id: 1,
-  trig_id: 1,
-  user_id: 1,
-  visit_date: new Date(),
-  visit_time: new Date(),
-  visit_timestamp: new Date(),
-  comment: "Initial",
-  wgs_lat: 51,
-  wgs_lon: -1,
-  wgs_height: 0,
-  osgb_eastings: null,
-  osgb_northings: null,
-  osgb_height: 0,
-  osgb_gridref: null,
-  fb_number: "fb01",
-  condition: TrigCondition.GOOD,
-  source: LogSource.UNKNOWN
-
-};
-const createLog02: CreateLogDto = {
-  id: 1,
-  trig_id: 1,
-  user_id: 1,
-  visit_date: new Date(),
-  visit_time: new Date(),
-  visit_timestamp: new Date(),
-  comment: "Initial",
-  wgs_lat: null,
-  wgs_lon: null,
-  wgs_height: 0,
-  osgb_eastings: 470267.34536504897,
-  osgb_northings: 122765.53816158895,
-  osgb_height: 0,
-  osgb_gridref: null,
-  fb_number: "fb01",
-  condition: TrigCondition.GOOD,
-  source: LogSource.UNKNOWN
-
-};
-
-const updLog: UpdateLogDto = { comment: 'updated' };
-
 const trig01: Trig = {
   id: 1,
   name: 'trig',
@@ -115,6 +45,82 @@ const user01: User = {
   logs: [],
   photos: [],
 };
+
+
+const log01: Log = {
+  id: 1,
+  trig: trig01,
+  user: user01,
+  visit_timestamp: new Date("2022-03-21 20:59:23"),
+  comment: "log01",
+  wgs_lat: 51,
+  wgs_lon: -1,
+  wgs_height: 0,
+  osgb_eastings: 470267.35,
+  osgb_northings: 122765.54,
+  osgb_gridref: "SU 70267 22765",
+  osgb_height: 0,
+  wgs_point: { type: 'Point', coordinates: [-1, 51] },
+  osgb_point: {
+    type: 'Point',
+    coordinates: [470267.35, 122765.54],
+  },
+  fb_number: "fb01",
+  condition: TrigCondition.GOOD,
+  source: LogSource.UNKNOWN,
+  deletedAt: null
+};
+
+export const logArray = [{ log01 }, { log01 }];
+export const createLog01: CreateLogDto = {
+  id: 1,
+  trig_id: 1,
+  user_id: 1,
+  visit_date: "2022-03-21",
+  visit_time: "20:59:23",
+  visit_timestamp: null,
+  comment: "log01",
+  wgs_lat: 51,
+  wgs_lon: -1,
+  wgs_height: 0,
+  osgb_eastings: null,
+  osgb_northings: null,
+  osgb_height: 0,
+  osgb_gridref: null,
+  fb_number: "fb01",
+  condition: TrigCondition.GOOD,
+  source: LogSource.UNKNOWN
+
+};
+export const createLog02: CreateLogDto = {
+  id: 1,
+  trig_id: 1,
+  user_id: 1,
+  visit_date: "",
+  visit_time: null,
+  visit_timestamp: new Date("2022-03-21 20:59:23"),
+  comment: "log01",
+  wgs_lat: null,
+  wgs_lon: null,
+  wgs_height: 0,
+  osgb_eastings: 470267.34536504897,
+  osgb_northings: 122765.53816158895,
+  osgb_height: 0,
+  osgb_gridref: null,
+  fb_number: "fb01",
+  condition: TrigCondition.GOOD,
+  source: LogSource.UNKNOWN
+
+};
+
+export const updLog: UpdateLogDto = { comment: 'updated' };
+
+
+
+
+
+
+
 
 const user01Dto: CreateUserDto = {
   id: 1,
@@ -164,6 +170,7 @@ const auth0ResultsUser01: Object = {
 };
 
 const userArray = [{ user01 }, { user01 }];
+
 
 
 
@@ -235,15 +242,24 @@ describe('LogsService', () => {
   });
 
   describe('create', () => {
-    it('should create a new log, given wgs coords', async () => {
+    it('should create a new log, given wgs coords and a date', async () => {
       const r1 = await service.create(createLog01);
       expect(r1).toEqual(log01);
-      expect(repoSaveSpy).toHaveBeenCalled();
+      expect(repoSaveSpy).toHaveBeenCalledWith(expect.objectContaining({
+        "comment": "log01",
+        "visit_timestamp": new Date("2022-03-21 20:59:23"),
+        "osgb_gridref": "SU 70267 22765",
+      }));
     });
-    it('should create a new log, given osgb coords', async () => {
+    it('should create a new log, given osgb coords and a timestamp', async () => {
       const r1 = await service.create(createLog02);
-      expect(r1.wgs_lat).not.toBeNull;
-      expect(repoSaveSpy).toHaveBeenCalled();
+      expect(r1).toEqual(log01);
+      expect(repoSaveSpy).toHaveBeenCalledWith(expect.objectContaining({
+        "comment": "log01",
+        "visit_timestamp": new Date("2022-03-21 20:59:23"),
+        "wgs_lat": 51,
+      }));
+
     });
     it('should fail to create a log for an invalid trigpoint', async () => {
       expect(trigsService).toBeDefined();
