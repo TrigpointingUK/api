@@ -91,6 +91,10 @@ export class Log {
   @Column({ type: 'enum', enum: TrigCondition, default: TrigCondition.UNKNOWN })
   condition: TrigCondition;
 
+  @Column({ type: 'smallint', nullable: true })
+  score: number;
+
+
   @Column({ type: 'enum', enum: LogSource, default: LogSource.UNKNOWN })
   source: LogSource;
 
@@ -101,16 +105,17 @@ export class Log {
   crt_timestamp?: Date;
 
   @Exclude()
-  @Column({ type: 'int', nullable: true, select: false })
-  crt_user_id?: number; //TODO: foreign
+  @ManyToOne(
+    /* istanbul ignore next */ (type) => User,
+    /* istanbul ignore next */ (user) => user.id,
+    {nullable: true}
+  )
+  @JoinColumn({ name: 'crt_user_id' })
+  crt_user: User;
 
   @Exclude()
-  @Column({ type: 'char', length: 6, nullable: true, select: false })
-  crt_ip_addr?: number; //TODO: type
-
-  @Exclude()
-  @Column({ type: 'int', nullable: true, select: false })
-  admin_user_id?: number; //TODO: foreign
+  @Column({ type: 'varchar', length: 15, nullable: true, select: false })
+  crt_ip_addr?: string;
 
   @Exclude()
   @Column({
@@ -120,9 +125,17 @@ export class Log {
   })
   admin_timestamp?: Date;
 
+  @ManyToOne(
+    /* istanbul ignore next */ (type) => User,
+    /* istanbul ignore next */ (user) => user.id,
+    {nullable: true}
+  )
+  @JoinColumn({ name: 'admin_user_id' })
+  admin_user?: User; 
+
   @Exclude()
-  @Column({ type: 'char', length: 6, nullable: true, select: false })
-  admin_ip_addr?: number; //TODO: type
+  @Column({ type: 'char', length: 15, nullable: true, select: false })
+  admin_ip_addr?: string;
 
   @Exclude()
   @UpdateDateColumn({ select: false })

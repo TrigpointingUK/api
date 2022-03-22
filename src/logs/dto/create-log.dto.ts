@@ -4,12 +4,12 @@ import {
   IsLatitude,
   IsOptional,
   Length,
-  isDateString,
   IsDateString,
   IsNumber,
   Min,
   IsEnum,
-  IsMilitaryTime,
+  Max,
+  IsIP,
 } from 'class-validator';
 import { LogSource, TrigCondition } from 'src/enum_types';
 
@@ -28,7 +28,7 @@ export class CreateLogDto {
   @IsOptional()
   visit_date?: string;
 
-  @IsMilitaryTime()
+  @Length(5,8)
   @IsOptional()
   visit_time?: string;
 
@@ -75,9 +75,21 @@ export class CreateLogDto {
   @IsEnum(TrigCondition)
   condition: TrigCondition;
 
+  @Min(0)
+  @Max(10)
+  @IsOptional()
+  score?: number;
+
   @IsEnum(LogSource)
   @IsOptional()
   source?: LogSource;
 
+  @IsDateString()
+  @IsOptional()
+  crt_timestamp?: Date;
+
+  @IsIP(4)
+  @IsOptional()
+  crt_ip_addr?: string;
 
 }
