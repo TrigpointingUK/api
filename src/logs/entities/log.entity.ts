@@ -30,6 +30,7 @@ export class Log {
     /* istanbul ignore next */ (trig) => trig.id,
   )
   @JoinColumn({ name: 'trig_id' })
+  @Index()
   trig: Trig;
 
   @Expose()
@@ -38,6 +39,7 @@ export class Log {
     /* istanbul ignore next */ (user) => user.id,
   )
   @JoinColumn({ name: 'user_id' })
+  @Index()
   user: User;
 
   @Column({ type: 'timestamp' })

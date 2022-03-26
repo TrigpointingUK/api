@@ -11,6 +11,7 @@ import { UsersModule } from './users/users.module';
 import { AuthzModule } from './authz/authz.module';
 import { CoordsService } from './coords/coords.service';
 import { CoordsModule } from './coords/coords.module';
+import { ServersModule } from './servers/servers.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { CoordsModule } from './coords/coords.module';
     UsersModule,
     AuthzModule,
     CoordsModule,
+    ServersModule,
   ],
   controllers: [AppController],
   providers: [ConfigService, AppService, CoordsService],

@@ -95,3 +95,13 @@ export enum LogSource {
   WEBSITE = 'W',
   UNKNOWN = 'U',
 }
+
+export enum PhotoType {
+  FLUSH_BRACKET = 'F',
+  TRIGPOINT = 'T',
+  LANDSCAPE = 'L',
+  PEOPLE = 'P',
+  OTHER = 'O',
+  NONE = 'X',
+  UNKNOWN = 'U',
+}
