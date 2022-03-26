@@ -18,7 +18,7 @@ export class ServersService {
   }
 
   findAll() {
-    return this.serversRepository.find({ relations: ['server'] });
+    return this.serversRepository.find();
   }
 
   findOne(id: number) {

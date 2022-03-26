@@ -61,6 +61,13 @@ Cloud Run -> direct ssl connection -> Cloud SQL
 Cloud Run -> unencrypted -> Cloud SQL
 - Poor security
 
+## Migrations
+
+```bash
+npx typeorm migration:create -n mynewmigration -d src/migrations
+```
+
+NB this will be automatically run by the app.  CLI based migrations are problematic, as there's no ormconfig file / object.
 
 
 

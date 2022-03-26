@@ -56,10 +56,10 @@ export class Photo {
   @Index()
   server: Server;
 
-  @Column({ type: 'text'})
+  @Column({ type: 'text', nullable: true})
   caption?: string;
 
-  @Column({ type: 'text' })
+  @Column({ type: 'text', nullable: true })
   description?: string;
 
 
