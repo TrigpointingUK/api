@@ -43,7 +43,7 @@
     "proj4": "^2.7.5",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.5.4",
+    "rxjs": "^7.5.5",
     "swagger-ui-express": "^4.3.0",
     "typeorm": "^0.2.44",
     "unique-names-generator": "^4.7.1"
