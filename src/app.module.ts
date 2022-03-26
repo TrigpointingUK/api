@@ -33,9 +33,10 @@ import { ServersModule } from './servers/servers.module';
           database: configService.get('POSTGRES_DATABASE'),
           autoLoadEntities: true,
           synchronize: true,
-          migrationsTableName: 'migration',
-          migrations: ['src/migration/*.ts'],
-          cli: { migrationsDir: 'src/migration' },
+          migrationsRun: true,
+          migrationsTableName: 'migrations',
+          migrations: ['dist/migrations/*{.ts,.js}'],
+          cli: { migrationsDir: 'src/migrations' },
           extra: extra
         })
       },
