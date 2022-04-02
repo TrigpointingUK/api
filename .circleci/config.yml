@@ -95,10 +95,10 @@ jobs:
             AUTH0_AUDIENCE=https://api.trigpointing.me,\
             AUTH0_REDIRECT_URL=https://api.trigpointing.me/docs/oauth2-redirect.html,\
             POSTGRES_SOCKET=/cloudsql/$POSTGRES_CONNECTION,\
-            POSTGRES_USERNAME=tme,\
+            POSTGRES_USERNAME=tme_api,\
             POSTGRES_DATABASE=tme,\
               --update-secrets \
-            POSTGRES_PASSWORD=TME_POSTGRES_PASSWORD:latest,\
+            POSTGRES_PASSWORD=TME_API_PASSWORD:latest,\
             AUTH0_CLIENT_ID=TME_SWAGGER_AUTH0_CLIENT_ID:latest,\
       - run:
           name: Retag image
@@ -136,10 +136,10 @@ jobs:
             AUTH0_AUDIENCE=https://api.trigpointing.uk,\
             AUTH0_REDIRECT_URL=https://api.trigpointing.uk/docs/oauth2-redirect.html,\
             POSTGRES_SOCKET=/cloudsql/$POSTGRES_CONNECTION,\
-            POSTGRES_USERNAME=tuk,\
+            POSTGRES_USERNAME=tuk_api,\
             POSTGRES_DATABASE=tuk,\
               --update-secrets \
-            POSTGRES_PASSWORD=TUK_POSTGRES_PASSWORD:latest,\
+            POSTGRES_PASSWORD=TUK_API_PASSWORD:latest,\
             AUTH0_CLIENT_ID=TUK_SWAGGER_AUTH0_CLIENT_ID:latest,\
       - run:
           name: Retag image

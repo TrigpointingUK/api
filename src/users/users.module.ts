@@ -9,5 +9,6 @@ import { AuthzModule } from 'src/authz/authz.module';
   imports: [TypeOrmModule.forFeature([User]), AuthzModule],
   controllers: [UsersController],
   providers: [UsersService],
+  exports: [UsersService]
 })
 export class UsersModule {}

@@ -14,7 +14,6 @@ import {
   Length,
   IsEnum,
   IsBoolean,
-  IsBooleanString,
 } from 'class-validator';
 import { Status } from 'src/enum_types';
 // https://github.com/typestack/class-validator#validation-decorators

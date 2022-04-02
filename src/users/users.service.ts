@@ -30,7 +30,13 @@ export class UsersService {
    */
   create(createUserDto: CreateUserDto): Promise<User> {
     console.log(createUserDto);
-    return this.usersRepository.save({ ...createUserDto });
+    const user = new User();
+    Object.keys(createUserDto).forEach((key) => {
+      user[key] = createUserDto[key] || (typeof(createUserDto[key]) === "boolean" ? false : null);
+    });
+    user.deletedAt = null;
+
+    return this.usersRepository.save(user);
   }
 
   /**

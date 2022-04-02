@@ -10,6 +10,8 @@ import { PhotosModule } from './photos/photos.module';
 import { UsersModule } from './users/users.module';
 import { AuthzModule } from './authz/authz.module';
 import { CoordsService } from './coords/coords.service';
+import { CoordsModule } from './coords/coords.module';
+import { ServersModule } from './servers/servers.module';
 
 @Module({
   imports: [
@@ -31,9 +33,10 @@ import { CoordsService } from './coords/coords.service';
           database: configService.get('POSTGRES_DATABASE'),
           autoLoadEntities: true,
           synchronize: true,
-          migrationsTableName: 'migration',
-          migrations: ['src/migration/*.ts'],
-          cli: { migrationsDir: 'src/migration' },
+          migrationsRun: true,
+          migrationsTableName: 'migrations',
+          migrations: ['dist/migrations/*{.ts,.js}'],
+          cli: { migrationsDir: 'src/migrations' },
           extra: extra
         })
       },
@@ -43,6 +46,8 @@ import { CoordsService } from './coords/coords.service';
     PhotosModule,
     UsersModule,
     AuthzModule,
+    CoordsModule,
+    ServersModule,
   ],
   controllers: [AppController],
   providers: [ConfigService, AppService, CoordsService],

@@ -89,3 +89,19 @@ export enum Licence {
   PRIVATE = 'private',
   BY_ATTRIBUTION = 'attribution',
 }
+
+export enum LogSource {
+  ANDROID_APP = 'A',
+  WEBSITE = 'W',
+  UNKNOWN = 'U',
+}
+
+export enum PhotoType {
+  FLUSH_BRACKET = 'F',
+  TRIGPOINT = 'T',
+  LANDSCAPE = 'L',
+  PEOPLE = 'P',
+  OTHER = 'O',
+  NONE = 'X',
+  UNKNOWN = 'U',
+}

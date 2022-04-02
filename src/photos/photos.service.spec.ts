@@ -2,6 +2,8 @@ import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CoordsService } from 'src/coords/coords.service';
+import { Licence, LogSource, PhotoType } from 'src/enum_types';
+import { Server } from 'src/servers/entities/server.entity';
 import { TrigsService } from 'src/trigs/trigs.service';
 import { Repository } from 'typeorm';
 import { Log } from '../logs/entities/log.entity';
@@ -20,12 +22,37 @@ const photo01: Photo = {
   caption: '',
   width: 0,
   height: 0,
+  server: new Server(),
+  filename: '',
+  filesize: 0,
+  icon_width: 0,
+  icon_height: 0,
+  icon_filename: '',
+  icon_filesize: 0,
+  licence: Licence.PUBLIC_DOMAIN,
+  source: LogSource.ANDROID_APP,
+  type: PhotoType.FLUSH_BRACKET,
+  crt_user: new User()
 };
 
 const photoArray = [{ photo01 }, { photo01 }];
 const createPhoto: CreatePhotoDto = {
-  name: 'initial name',
+  caption: 'initial caption',
   description: 'initial description',
+  id: 1,
+  log_id: 1,
+  server_id: 1,
+  filename: 'test.gif',
+  filesize: 10,
+  height: 20,
+  width: 30,
+  icon_filename: 'testi.gif',
+  icon_filesize: 1,
+  icon_height: 2,
+  icon_width: 3,
+  licence: Licence.PUBLIC_DOMAIN,
+  source: LogSource.ANDROID_APP,
+  type: PhotoType.FLUSH_BRACKET,
 };
 const updPhoto: UpdatePhotoDto = { description: 'updated' };
 

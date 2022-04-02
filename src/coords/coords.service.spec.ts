@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import exp from 'constants';
 import { CoordsService } from './coords.service';
 
 describe('CoordsService', () => {

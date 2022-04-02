@@ -4,12 +4,11 @@ import { Trig } from './entities/trig.entity';
 import { TrigsService } from './trigs.service';
 import { TrigsController } from './trigs.controller';
 import { AuthzModule } from '../authz/authz.module';
-import { CoordsService } from 'src/coords/coords.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Trig]), AuthzModule],
   controllers: [TrigsController],
-  providers: [TrigsService, CoordsService],
+  providers: [TrigsService],
   exports: [TrigsService],
 })
 export class TrigsModule {}

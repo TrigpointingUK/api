@@ -17,11 +17,11 @@ import {
   CreateDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity({name: 'users'})
 @Exclude()
 export class User {
   @Expose()
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('identity')
   id: number;
 
   @Expose()
@@ -29,7 +29,7 @@ export class User {
   @Column({ type: 'varchar', length: 50, nullable: false })
   nickname: string;
 
-  @Index({ unique: true })
+  // @Index({ unique: true })
   @Column({ type: 'varchar', length: 50, nullable: true })
   email?: string;
 
@@ -69,8 +69,8 @@ export class User {
   @Column({ type: 'enum', enum: Licence, default: Licence.BY_ATTRIBUTION })
   licence_default: Licence;
 
-  @Column({ type: 'bigint', nullable: true })
-  mobile_number?: number;
+  @Column({ type: 'varchar', nullable: true })
+  mobile_number?: string;
 
   @Column({ type: 'varchar', length: 64, nullable: true, select: false })
   cryptpw?: string;

@@ -30,10 +30,10 @@ export class TrigsController {
    * Create a new trig record
    */
   @Post()
-  @UseGuards(AuthGuard('tukjwt'), PermissionsGuard)
-  @Permissions('create:trigs')
-  @ApiBearerAuth('jwt') // swagger
-  @ApiOAuth2([]) // swagger
+  // @UseGuards(AuthGuard('tukjwt'), PermissionsGuard)
+  // @Permissions('create:trigs')
+  // @ApiBearerAuth('jwt') // swagger
+  // @ApiOAuth2([]) // swagger
   create(@Body() createTrigDto: CreateTrigDto) {
     return this.trigsService.create(createTrigDto);
   }
