@@ -6,11 +6,13 @@ export class CreatePhotoDto {
   @IsPositive()
   id: number;
 
+  @IsOptional()
   @IsPositive()
-  trig_id: number;
+  trig_id?: number;
 
+  @IsOptional()
   @IsPositive()
-  user_id: number;
+  user_id?: number;
 
   @IsPositive()
   log_id: number;

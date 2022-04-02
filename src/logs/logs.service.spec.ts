@@ -68,7 +68,9 @@ const log01: Log = {
   fb_number: "fb01",
   condition: TrigCondition.GOOD,
   source: LogSource.UNKNOWN,
-  deletedAt: null
+  deletedAt: null,
+  score: 0,
+  crt_user: new User
 };
 
 export const logArray = [{ log01 }, { log01 }];
